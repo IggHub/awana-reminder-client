@@ -8,6 +8,16 @@ function getSchedules(cb){
     .then(cb)
 };
 
+function getWorkers(cb){
+  return fetch(`api/workers`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  }).then((response) => response.json())
+    .then(cb)
+};
+
 function postSchedule(date, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
@@ -42,5 +52,5 @@ function deleteSchedule(scheduleId, cb){
   }).then(cb);
 }
 
-const Client = { getSchedules, postSchedule, updateSchedule, deleteSchedule };
+const Client = { getSchedules, postSchedule, updateSchedule, deleteSchedule, getWorkers };
 export default Client;

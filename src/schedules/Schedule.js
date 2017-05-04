@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Col, Row, Button} from 'react-bootstrap';
+import {Grid, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
 import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
@@ -18,12 +18,14 @@ class Schedule extends React.Component {
     this.state = {
       schedules: [],
       schedule: 'Some schedule',
+      workers: [],
+      worker: 'Sunny D',
       date: '',
       userId: 1,
       scheduleId: '',
       prevId: 0,
       editable: false,
-      creatable: false
+      creatable: true,
     }
     this.handleDate = this.handleDate.bind(this);
     this.postSchedule = this.postSchedule.bind(this);
@@ -37,6 +39,11 @@ class Schedule extends React.Component {
       this.setState({schedules})
     })
   };
+  getWorkers(){
+    Client.getWorkers((workers) => {
+      this.setState({workers})
+    })
+  }
   postSchedule(){
     Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
@@ -75,11 +82,12 @@ class Schedule extends React.Component {
   };
   componentDidMount(){
     this.getSchedules();
+    this.getWorkers();
   };
 
   render(){
-    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} /> : <div></div>
+    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} /> : <div></div>;
     return (
       <Grid>
         <Row>
@@ -97,6 +105,14 @@ class Schedule extends React.Component {
           {editSchedule}
           {createSchedule}
         </Row>
+        <h1>Workers</h1>
+
+        <DropdownButton title="Dropdown this" id={`dropdown1`}>
+          {this.state.workers.map((worker, index) =>
+            <MenuItem key={index} id={index}>Workers: {worker.name}</MenuItem>
+          )}
+        </DropdownButton>
+        <h1>End workers</h1>
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
       </Grid>
     )
