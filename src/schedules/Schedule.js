@@ -11,6 +11,8 @@ class Schedule extends React.Component {
       schedule: 'Some schedule',
       date: '',
       userId: 1,
+      scheduleId: '',
+      prevId: 0,
       editable: false
     }
     this.handleDate = this.handleDate.bind(this);
@@ -25,14 +27,14 @@ class Schedule extends React.Component {
     })
   };
   postSchedule(){
-    let date = this.state.date;
-    Client.postSchedule(date, (schedule) => {
+    Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
     })
   };
   updateSchedule(){
-    Client.updateSchedule(9, this.state.date, () => {
-      this.setState({schedules: this.state.schedules})
+    Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
+      this.setState({schedules: this.state.schedules});
+      this.getSchedules();
     })
   };
   deleteSchedule(schedule){
@@ -43,27 +45,34 @@ class Schedule extends React.Component {
   handleDate(e){
     this.setState({date: e.target.value})
   };
-  handleEdit(e){
-    this.setState({editable: !this.state.editable})
+  handleEdit(id){
+    this.setState({editable: false})
+    if (id === this.state.scheduleId){
+      this.setState({
+        scheduleId: id
+      });
+    } else {
+      this.setState({
+        editable: !this.state.editable,
+        scheduleId: id
+      });
+    }
   }
   componentDidMount(){
     this.getSchedules();
   };
 
   render(){
-    const editOrCreate = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} />
+    const editOrCreateSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} />
     return (
       <div>
         <h1>Hello from schedulejS!</h1>
         <ul>
           {this.state.schedules.map((schedule, index) =>
-            <li key={index}>Schedule For: <a href="#" onClick={this.handleEdit}> {schedule.date} (Schedule ID: {schedule.id}) </a> <a href="#" onClick={() => this.deleteSchedule(schedule.id)}>X</a></li>
+            <li key={index}>Schedule For: <a href="#" onClick={() => this.handleEdit(schedule.id)}> {schedule.date} (Schedule ID: {schedule.id}) </a> <a href="#" onClick={() => this.deleteSchedule(schedule.id)}>X</a></li>
           )}
         </ul>
-
-
-        {editOrCreate}
-
+        {editOrCreateSchedule}
       </div>
     )
   }
