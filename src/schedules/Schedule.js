@@ -45,15 +45,16 @@ class Schedule extends React.Component {
   handleDate(e){
     this.setState({date: e.target.value})
   };
-  handleEdit(id){
-    this.setState({editable: false})
+  handleEdit(id, date){
+    this.setState({editable: false, date: date})
+    //console.log('editable: ', this.state.editable)
     if (id === this.state.scheduleId){
       this.setState({
         scheduleId: id
       });
-    } else {
+    } else if (id !== this.state.scheduleId) {
       this.setState({
-        editable: !this.state.editable,
+        editable: true,
         scheduleId: id
       });
     }
@@ -69,7 +70,7 @@ class Schedule extends React.Component {
         <h1>Hello from schedulejS!</h1>
         <ul>
           {this.state.schedules.map((schedule, index) =>
-            <li key={index}>Schedule For: <a href="#" onClick={() => this.handleEdit(schedule.id)}> {schedule.date} (Schedule ID: {schedule.id}) </a> <a href="#" onClick={() => this.deleteSchedule(schedule.id)}>X</a></li>
+            <li key={index}>Schedule For: <a href="#" onClick={() => this.handleEdit(schedule.id, schedule.date)}> {schedule.date} (Schedule ID: {schedule.id}) </a> <a href="#" onClick={() => this.deleteSchedule(schedule.id)}>X</a></li>
           )}
         </ul>
         {editOrCreateSchedule}
