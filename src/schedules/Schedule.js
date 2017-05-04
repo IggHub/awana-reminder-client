@@ -1,4 +1,5 @@
 import React from 'react';
+import {Thumbnail, Grid, Row, Col, Button} from 'react-bootstrap';
 import Client from '../utils/Client';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
@@ -66,15 +67,37 @@ class Schedule extends React.Component {
   render(){
     const editOrCreateSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} />
     return (
-      <div>
-        <h1>Hello from schedulejS!</h1>
-        <ul>
+      <Grid>
+        <Row>
+          <h1>Hello from schedulejS!</h1>
           {this.state.schedules.map((schedule, index) =>
-            <li key={index}>Schedule For: <a href="#" onClick={() => this.handleEdit(schedule.id, schedule.date)}> {schedule.date} (Schedule ID: {schedule.id}) </a> <a href="#" onClick={() => this.deleteSchedule(schedule.id)}>X</a></li>
+            <Col md={4} sm={6} key={index}>
+              <Thumbnail>
+                <Row>
+                  <Col xs={10} xsOffset={1}>
+                    Schedule For: {schedule.date} (Schedule ID: {schedule.id})
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={10} xsOffset={1}>
+                    <p>Worker1</p>
+                    <p>Worker2</p>
+                    <p>Worker3</p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={10} xsOffset={1}>
+                    <Button bsStyle="info" onClick={() => this.handleEdit(schedule.id, schedule.date)}>Edit</Button> <Button bsStyle="danger" onClick={() => this.deleteSchedule(schedule.id)}>Delete</Button>
+                  </Col>
+                </Row>
+              </Thumbnail>
+            </Col>
           )}
-        </ul>
-        {editOrCreateSchedule}
-      </div>
+        </Row>
+        <Row>
+          {editOrCreateSchedule}
+        </Row>
+      </Grid>
     )
   }
 }
