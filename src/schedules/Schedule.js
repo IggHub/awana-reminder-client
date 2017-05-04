@@ -4,6 +4,13 @@ import Client from '../utils/Client';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
 
+const addButtonStyle={
+  position: 'fixed',
+  bottom: '25px',
+  right: '25px',
+  borderRadius: '25px'
+};
+
 class Schedule extends React.Component {
   constructor(){
     super();
@@ -14,13 +21,15 @@ class Schedule extends React.Component {
       userId: 1,
       scheduleId: '',
       prevId: 0,
-      editable: false
+      editable: false,
+      creatable: false
     }
     this.handleDate = this.handleDate.bind(this);
     this.postSchedule = this.postSchedule.bind(this);
     this.updateSchedule = this.updateSchedule.bind(this);
     this.deleteSchedule = this.deleteSchedule.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -47,7 +56,7 @@ class Schedule extends React.Component {
     this.setState({date: e.target.value})
   };
   handleEdit(id, date){
-    this.setState({editable: false, date: date})
+    this.setState({editable: !this.state.editable, date: date, creatable: false})
     //console.log('editable: ', this.state.editable)
     if (id === this.state.scheduleId){
       this.setState({
@@ -59,13 +68,17 @@ class Schedule extends React.Component {
         scheduleId: id
       });
     }
-  }
+  };
+  handleCreate(){
+    this.setState({editable: false, creatable: !this.state.creatable})
+  };
   componentDidMount(){
     this.getSchedules();
   };
 
   render(){
-    const editOrCreateSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} />
+    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} /> : <div></div>
     return (
       <Grid>
         <Row>
@@ -75,19 +88,28 @@ class Schedule extends React.Component {
               <Thumbnail>
                 <Row>
                   <Col xs={10} xsOffset={1}>
-                    Schedule For: {schedule.date} (Schedule ID: {schedule.id})
+                    <h4 className="class-title">
+                      Schedule For: {schedule.date} (Schedule ID: {schedule.id})
+                    </h4>
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={10} xsOffset={1}>
-                    <p>Worker1</p>
-                    <p>Worker2</p>
-                    <p>Worker3</p>
+                    <h6>Worker1</h6>
+                    <h6>Worker2</h6>
+                    <h6>Worker3</h6>
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={10} xsOffset={1}>
-                    <Button bsStyle="info" onClick={() => this.handleEdit(schedule.id, schedule.date)}>Edit</Button> <Button bsStyle="danger" onClick={() => this.deleteSchedule(schedule.id)}>Delete</Button>
+                    <Row>
+                      <Col xs={4} xsOffset={1}>
+                        <Button bsStyle="info" onClick={() => this.handleEdit(schedule.id, schedule.date)}>Edit</Button>
+                      </Col>
+                      <Col xs={4} xsOffset={2}>
+                        <Button bsStyle="danger" onClick={() => this.deleteSchedule(schedule.id)}>Delete</Button>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Thumbnail>
@@ -95,8 +117,10 @@ class Schedule extends React.Component {
           )}
         </Row>
         <Row>
-          {editOrCreateSchedule}
+          {editSchedule}
+          {createSchedule}
         </Row>
+        <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info">+</Button>
       </Grid>
     )
   }
