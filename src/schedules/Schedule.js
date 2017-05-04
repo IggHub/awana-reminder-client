@@ -1,6 +1,7 @@
 import React from 'react';
-import {Thumbnail, Grid, Row, Col, Button} from 'react-bootstrap';
+import {Grid, Col, Row, Button} from 'react-bootstrap';
 import Client from '../utils/Client';
+import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
 
@@ -82,45 +83,21 @@ class Schedule extends React.Component {
     return (
       <Grid>
         <Row>
-          <h1>Hello from schedulejS!</h1>
-          {this.state.schedules.map((schedule, index) =>
-            <Col md={4} sm={6} key={index}>
-              <Thumbnail>
-                <Row>
-                  <Col xs={10} xsOffset={1}>
-                    <h4 className="class-title">
-                      Schedule For: {schedule.date} (Schedule ID: {schedule.id})
-                    </h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={10} xsOffset={1}>
-                    <h6>Worker1</h6>
-                    <h6>Worker2</h6>
-                    <h6>Worker3</h6>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={10} xsOffset={1}>
-                    <Row>
-                      <Col xs={4} xsOffset={1}>
-                        <Button bsStyle="info" onClick={() => this.handleEdit(schedule.id, schedule.date)}>Edit</Button>
-                      </Col>
-                      <Col xs={4} xsOffset={2}>
-                        <Button bsStyle="danger" onClick={() => this.deleteSchedule(schedule.id)}>Delete</Button>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Thumbnail>
-            </Col>
-          )}
+          <Col>
+            <h1>Hello from schedulejS!</h1>
+          </Col>
+        </Row>
+        <Row>
+          <DisplaySchedules
+            schedules={this.state.schedules}
+            handleEdit={this.handleEdit}
+            deleteSchedule={this.deleteSchedule}/>
         </Row>
         <Row>
           {editSchedule}
           {createSchedule}
         </Row>
-        <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info">+</Button>
+        <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
       </Grid>
     )
   }
