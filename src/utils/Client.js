@@ -32,6 +32,20 @@ function postSchedule(date, cb) {
     .then(cb);
 };
 
+function postWorker(workerName, scheduleId, cb) {
+  return fetch('api/workers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: workerName,
+      schedule_id: scheduleId//how do I pass the schedule's ID?
+    })
+  }).then((response) => response.json())
+    .then(cb);
+};
+
 function updateSchedule(scheduleId, date, cb) {
   return fetch(`api/schedules/${scheduleId}`, {
     method: 'PUT',
@@ -50,7 +64,8 @@ function deleteSchedule(scheduleId, cb){
   return fetch(`api/schedules/${scheduleId}`, {
     method: 'DELETE'
   }).then(cb);
-}
+};
 
-const Client = { getSchedules, postSchedule, updateSchedule, deleteSchedule, getWorkers };
+const Client = { getSchedules, postSchedule, updateSchedule, deleteSchedule, getWorkers, postWorker };
+
 export default Client;

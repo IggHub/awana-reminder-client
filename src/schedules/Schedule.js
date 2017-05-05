@@ -1,5 +1,6 @@
 import React from 'react';
 import {Grid, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
+
 import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
@@ -33,6 +34,8 @@ class Schedule extends React.Component {
     this.deleteSchedule = this.deleteSchedule.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
+    this.handleWorkerName = this.handleWorkerName.bind(this);
+    this.clickWorker = this.clickWorker.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -43,10 +46,20 @@ class Schedule extends React.Component {
     Client.getWorkers((workers) => {
       this.setState({workers})
     })
-  }
+  };
   postSchedule(){
+
     Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
+    }).then(() => Client.postWorker(this.state.worker, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
+      this.setState({workers: this.state.workers.concat([worker])})
+    })
+  )
+
+  };
+  postWorker(){
+    Client.postWorker(this.state.worker, this.state.scheduleId, () => {
+      console.log('hello post worker')
     })
   };
   updateSchedule(){
@@ -62,6 +75,9 @@ class Schedule extends React.Component {
   };
   handleDate(e){
     this.setState({date: e.target.value})
+  };
+  handleWorkerName(e){
+    this.setState({worker: e.target.value}, () => console.log(this.state.worker))
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
@@ -80,6 +96,11 @@ class Schedule extends React.Component {
   handleCreate(){
     this.setState({editable: false, creatable: !this.state.creatable})
   };
+  clickWorker(worker){
+    this.setState({
+      worker
+    })
+  };
   componentDidMount(){
     this.getSchedules();
     this.getWorkers();
@@ -87,7 +108,7 @@ class Schedule extends React.Component {
 
   render(){
     const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>;
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} /> : <div></div>;
     return (
       <Grid>
         <Row>
@@ -109,10 +130,11 @@ class Schedule extends React.Component {
 
         <DropdownButton title="Dropdown this" id={`dropdown1`}>
           {this.state.workers.map((worker, index) =>
-            <MenuItem key={index} id={index}>Workers: {worker.name}</MenuItem>
+            <MenuItem key={index} onClick={() => this.clickWorker(worker.name)} id={index} value={worker.name}>Workers: {worker.name}</MenuItem>
           )}
         </DropdownButton>
         <h1>End workers</h1>
+
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
       </Grid>
     )

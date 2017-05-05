@@ -14,7 +14,7 @@ class CreateSchedule extends React.Component {
               {/*<p>Date: {this.props.date}</p> */}
               <br />
               <ControlLabel>Enter Worker:</ControlLabel>
-              <FormControl placeholder="Enter worker" />
+              <FormControl placeholder="Enter worker" onChange={this.props.handleWorkerName} />
               <br />
               <Button bsStyle="info" onClick={this.props.postSchedule}>Submit New</Button>
             </FormGroup>
