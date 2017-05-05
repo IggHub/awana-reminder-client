@@ -20,7 +20,9 @@ class Schedule extends React.Component {
       schedules: [],
       schedule: 'Some schedule',
       workers: [],
+      scheduledWorkers: [],
       worker: 'Sunny D',
+      phone: '777-777-7777',
       date: '',
       userId: 1,
       scheduleId: '',
@@ -35,7 +37,9 @@ class Schedule extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleWorkerName = this.handleWorkerName.bind(this);
+    this.handleWorkerPhone = this.handleWorkerPhone.bind(this);
     this.clickWorker = this.clickWorker.bind(this);
+    this.getScheduledWorkers = this.getScheduledWorkers.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -47,17 +51,21 @@ class Schedule extends React.Component {
       this.setState({workers})
     })
   };
+  getScheduledWorkers(scheduleId){
+    Client.getWorkers((scheduledWorkers) => {
+      this.setState({scheduledWorkers})
+    }, scheduleId)
+  }
   postSchedule(){
-
     Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
-    }).then(() => Client.postWorker(this.state.worker, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
-      this.setState({workers: this.state.workers.concat([worker])})
-    })
-  )
-
+    }).then(() => Client.postWorker(this.state.worker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
+        this.setState({workers: this.state.workers.concat([worker])})
+      })
+    )
   };
   postWorker(){
+    //just create worker, with schedule_id = nil
     Client.postWorker(this.state.worker, this.state.scheduleId, () => {
       console.log('hello post worker')
     })
@@ -77,7 +85,10 @@ class Schedule extends React.Component {
     this.setState({date: e.target.value})
   };
   handleWorkerName(e){
-    this.setState({worker: e.target.value}, () => console.log(this.state.worker))
+    this.setState({worker: e.target.value})
+  };
+  handleWorkerPhone(e){
+    this.setState({phone: e.target.value}, () => console.log(this.state.phone))
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
@@ -104,11 +115,14 @@ class Schedule extends React.Component {
   componentDidMount(){
     this.getSchedules();
     this.getWorkers();
+    this.getScheduledWorkers(42);
+
   };
 
   render(){
     const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>;
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleWorkerPhone={this.handleWorkerPhone}/> : <div></div>;
+    console.log(this.state.workers);
     return (
       <Grid>
         <Row>
@@ -120,7 +134,9 @@ class Schedule extends React.Component {
           <DisplaySchedules
             schedules={this.state.schedules}
             handleEdit={this.handleEdit}
-            deleteSchedule={this.deleteSchedule}/>
+            deleteSchedule={this.deleteSchedule}
+            workers={this.state.workers}
+          />
         </Row>
         <Row>
           {editSchedule}
@@ -133,6 +149,9 @@ class Schedule extends React.Component {
             <MenuItem key={index} onClick={() => this.clickWorker(worker.name)} id={index} value={worker.name}>Workers: {worker.name}</MenuItem>
           )}
         </DropdownButton>
+        {this.state.scheduledWorkers.map((scheduledWorker, index) =>
+          <li key={index}>{scheduledWorker.name}</li>
+        )}
         <h1>End workers</h1>
 
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>

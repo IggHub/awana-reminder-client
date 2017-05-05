@@ -8,8 +8,9 @@ function getSchedules(cb){
     .then(cb)
 };
 
-function getWorkers(cb){
-  return fetch(`api/workers`, {
+function getWorkers(cb, schedule_id = null){
+  let workersUrl = (schedule_id === null) ? `api/workers` : `api/workers?schedule_id=${schedule_id}`
+  return fetch(workersUrl, {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -32,7 +33,7 @@ function postSchedule(date, cb) {
     .then(cb);
 };
 
-function postWorker(workerName, scheduleId, cb) {
+function postWorker(workerName, workerPhone, scheduleId, cb) {
   return fetch('api/workers', {
     method: 'POST',
     headers: {
@@ -40,6 +41,7 @@ function postWorker(workerName, scheduleId, cb) {
     },
     body: JSON.stringify({
       name: workerName,
+      phone: workerPhone,
       schedule_id: scheduleId//how do I pass the schedule's ID?
     })
   }).then((response) => response.json())
@@ -66,6 +68,13 @@ function deleteSchedule(scheduleId, cb){
   }).then(cb);
 };
 
-const Client = { getSchedules, postSchedule, updateSchedule, deleteSchedule, getWorkers, postWorker };
+const Client = {
+    getSchedules,
+    postSchedule,
+    updateSchedule,
+    deleteSchedule,
+    getWorkers,
+    postWorker
+  };
 
 export default Client;

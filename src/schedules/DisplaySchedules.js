@@ -13,10 +13,19 @@ class DisplaySchedules extends React.Component{
                 <h4 className="class-title">
                   Schedule For: {schedule.date} (Schedule ID: {schedule.id})
                 </h4>
+                Hello
+
               </Col>
             </Row>
             <Row>
               <Col xs={10} xsOffset={1}>
+                {this.props.workers.filter(function(worker){
+                  return worker.schedule_id === schedule.id
+                  })
+                  .map((worker, index) => {
+                    return <li key={index}>{worker.name}</li>
+                  })
+                }
                 <h6>Worker1</h6>
                 <h6>Worker2</h6>
                 <h6>Worker3</h6>
