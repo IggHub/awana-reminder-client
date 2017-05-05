@@ -122,7 +122,6 @@ class Schedule extends React.Component {
   render(){
     const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>;
     const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleWorkerPhone={this.handleWorkerPhone}/> : <div></div>;
-    console.log(this.state.workers);
     return (
       <Grid>
         <Row>
