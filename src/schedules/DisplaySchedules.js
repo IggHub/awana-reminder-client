@@ -1,13 +1,17 @@
 import React from 'react';
 import {Thumbnail, Row, Col, Button} from 'react-bootstrap';
 
+const thumbnailStyle= {
+  height: '250px'
+};
+
 class DisplaySchedules extends React.Component{
   render(){
     return (
       <div>
       {this.props.schedules.map((schedule, index) =>
         <Col md={4} sm={6} key={index}>
-          <Thumbnail>
+          <Thumbnail style={thumbnailStyle}>
             <Row>
               <Col xs={10} xsOffset={1}>
                 <h4 className="class-title">
