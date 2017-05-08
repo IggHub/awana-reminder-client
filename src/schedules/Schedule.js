@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
 
+
 import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
@@ -92,17 +93,16 @@ class Schedule extends React.Component {
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
-    //console.log('editable: ', this.state.editable)
     if (id === this.state.scheduleId){
       this.setState({
         scheduleId: id
-      });
+      }, () => this.getScheduledWorkers(this.state.scheduleId))
     } else if (id !== this.state.scheduleId) {
       this.setState({
         editable: true,
         scheduleId: id
-      });
-    }
+      }, () => this.getScheduledWorkers(this.state.scheduleId));
+    };
   };
   handleCreate(){
     this.setState({editable: false, creatable: !this.state.creatable})
@@ -110,17 +110,15 @@ class Schedule extends React.Component {
   clickWorker(worker){
     this.setState({
       worker
-    })
+    }, () => console.log(this.state.worker))
   };
   componentDidMount(){
     this.getSchedules();
     this.getWorkers();
-    this.getScheduledWorkers(42);
-
   };
 
   render(){
-    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} /> : <div></div>;
+    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} handleWorkerName={this.handleWorkerName} handlWorkerPhone={this.handleWorkerPhone} scheduledWorkers={this.state.scheduledWorkers} /> : <div></div>;
     const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleWorkerPhone={this.handleWorkerPhone}/> : <div></div>;
     return (
       <Grid>
@@ -143,13 +141,13 @@ class Schedule extends React.Component {
         </Row>
         <h1>Workers</h1>
 
-        <DropdownButton title="Dropdown this" id={`dropdown1`}>
+        <DropdownButton title="Dropdown" id={`dropdown1`}>
           {this.state.workers.map((worker, index) =>
             <MenuItem key={index} onClick={() => this.clickWorker(worker.name)} id={index} value={worker.name}>Workers: {worker.name}</MenuItem>
           )}
         </DropdownButton>
-        {this.state.scheduledWorkers.map((scheduledWorker, index) =>
-          <li key={index}>{scheduledWorker.name}</li>
+        {this.state.scheduledWorkers.map((worker, index) =>
+          <li key={index}>{worker.name}</li>
         )}
         <h1>End workers</h1>
 
