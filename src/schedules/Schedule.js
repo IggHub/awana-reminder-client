@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
-
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
@@ -14,6 +15,16 @@ const addButtonStyle={
   borderRadius: '25px'
 };
 
+var options = [
+  { value: 'one', label: 'One', whatever: 1 },
+  { value: 'two', label: 'Two' }
+];
+
+function logChange(val) {
+  console.log("Selected: " + val.label);
+}
+
+
 class Schedule extends React.Component {
   constructor(){
     super();
@@ -21,6 +32,7 @@ class Schedule extends React.Component {
       schedules: [],
       schedule: 'Some schedule',
       workers: [],
+      selectWorkers: [],
       scheduledWorkers: [],
       worker: 'Sunny D',
       phone: '777-777-7777',
@@ -41,6 +53,7 @@ class Schedule extends React.Component {
     this.handleWorkerPhone = this.handleWorkerPhone.bind(this);
     this.clickWorker = this.clickWorker.bind(this);
     this.getScheduledWorkers = this.getScheduledWorkers.bind(this);
+    this.mapWorkersToSelectWorkers = this.mapWorkersToSelectWorkers.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -49,14 +62,25 @@ class Schedule extends React.Component {
   };
   getWorkers(){
     Client.getWorkers((workers) => {
-      this.setState({workers})
-    })
+      this.setState({workers});
+    }).then(() => this.mapWorkersToSelectWorkers(this.state.workers))
   };
   getScheduledWorkers(scheduleId){
     Client.getWorkers((scheduledWorkers) => {
       this.setState({scheduledWorkers})
     }, scheduleId)
-  }
+  };
+  mapWorkersToSelectWorkers(workers){
+    let selectWorkers = workers.map(function(worker){
+      return {
+        value: worker.name,
+        label: worker.name,
+        workerId: worker.id,
+        phone: worker.phone
+      }
+    })
+    this.setState({selectWorkers}, () => console.log(this.state.selectWorkers))
+  };
   postSchedule(){
     Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
@@ -107,6 +131,9 @@ class Schedule extends React.Component {
   handleCreate(){
     this.setState({editable: false, creatable: !this.state.creatable})
   };
+  workersOptions(){
+
+  }
   clickWorker(worker){
     this.setState({
       worker
@@ -115,6 +142,7 @@ class Schedule extends React.Component {
   componentDidMount(){
     this.getSchedules();
     this.getWorkers();
+
   };
 
   render(){
@@ -122,6 +150,17 @@ class Schedule extends React.Component {
     const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleWorkerPhone={this.handleWorkerPhone}/> : <div></div>;
     return (
       <Grid>
+        <Row>
+          <Col md={6}>
+            <Select
+              name="form-field-name"
+              value="one"
+              options={this.state.selectWorkers}
+              onChange={logChange}
+            />
+
+          </Col>
+        </Row>
         <Row>
           <Col>
             <h1>Hello from schedulejS!</h1>
