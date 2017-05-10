@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Col, Row, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
-import Select from 'react-select';
+import {Select, Creatable} from 'react-select';
 import 'react-select/dist/react-select.css';
 
 function logChange(val) {
@@ -21,14 +21,12 @@ class CreateSchedule extends React.Component {
               {/*<p>Date: {this.props.date}</p> */}
               <br />
               <ControlLabel>Enter Worker:</ControlLabel>
-              <Select
+              <Creatable
                 name="form-field-name"
                 value={this.props.selectWorker}
                 options={this.props.selectWorkers}
                 onChange={this.props.handleSelectWorker}
               />
-
-              <FormControl placeholder="Enter worker" onChange={this.props.handleWorkerName} />
               <br />
               <ControlLabel>Enter Phone:</ControlLabel>
               <FormControl placeholder="Enter phone" onChange={this.props.handleWorkerPhone} />
