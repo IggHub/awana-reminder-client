@@ -19,7 +19,18 @@ function getWorkers(cb, schedule_id = null){
     .then(cb)
 };
 
-function postSchedule(date, message, cb) {
+function getTexts(cb, schedule_id = null){
+  let textsUrl = (schedule_id === null) ? `api/texts` : `api/texts?schedule_id=${schedule_id}`
+  return fetch(textsUrl, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  }).then((response) => response.json())
+    .then(cb)
+};
+
+function postSchedule(date, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
     headers: {
@@ -27,7 +38,6 @@ function postSchedule(date, message, cb) {
     },
     body: JSON.stringify({
       date: date,
-      message: message,
       user_id: 1
     })
   }).then((response) => response.json())
@@ -48,8 +58,22 @@ function postWorker(workerName, workerPhone, scheduleId, cb) {
   }).then((response) => response.json())
     .then(cb);
 };
+function postText(message, scheduleId, cb){
+  return fetch(`api/texts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      message: message,
+      schedule_id: scheduleId
+    })
+  }).then((response) => response.json())
+    .then(cb);
+};
 
 function postMessage(message){
+  //return fetch(`api/sms`, {... //=> create new class, sms_controller
   return fetch(`api/texts/send_text`, {
     method: 'POST',
     headers: {
@@ -96,15 +120,31 @@ function deleteSchedule(scheduleId, cb){
   }).then(cb);
 };
 
+function deleteWorker(workerId, cb){
+  return fetch(`api/workers/${workerId}`, {
+    method: 'DELETE'
+  }).then(cb);
+};
+
+function deleteText(textId, cb){
+  return fetch(`api/texts/${textId}`, {
+    method: 'DELETE'
+  }).then(cb);
+};
+
 const Client = {
     getSchedules,
-    postSchedule,
+    getWorkers,
+    getTexts,
     updateSchedule,
     updateWorker,
     deleteSchedule,
-    getWorkers,
+    deleteWorker,
+    deleteText,
+    postSchedule,
     postWorker,
-    postMessage
+    postMessage,
+    postText
   };
 
 export default Client;

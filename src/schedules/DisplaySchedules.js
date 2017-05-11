@@ -2,7 +2,7 @@ import React from 'react';
 import {Thumbnail, Row, Col, Button} from 'react-bootstrap';
 
 const thumbnailStyle= {
-  height: '300px'
+  height: '350px'
 };
 
 class DisplaySchedules extends React.Component{
@@ -32,9 +32,15 @@ class DisplaySchedules extends React.Component{
               </Col>
             </Row>
             <Row>
-              <Col xs={4} offset={4}>
+              <Col xs={10} xsOffset={1}>
                 <h3>Message:</h3>
-                <p>{schedule.message}</p>
+                  {this.props.texts.filter(function(text){
+                    return text.schedule_id === schedule.id
+                  })
+                  .map((text, index) => {
+                    return <h6 key={index}>{text.message}</h6>
+                  })
+                }
               </Col>
             </Row>
             <Row>

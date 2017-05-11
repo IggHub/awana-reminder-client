@@ -1,12 +1,7 @@
 import React from 'react';
 import {Grid, Col, Row, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
-import {Select, Creatable} from 'react-select';
+import {Creatable} from 'react-select';
 import 'react-select/dist/react-select.css';
-
-function logChange(val) {
-  console.log("Selected: " + val.label);
-}
-
 
 class CreateSchedule extends React.Component {
   render(){

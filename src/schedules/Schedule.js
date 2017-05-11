@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
+import {Grid, Col, Row, Button} from 'react-bootstrap';
 
 import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
@@ -25,6 +25,7 @@ class Schedule extends React.Component {
       scheduledWorkers: [],
       worker: 'Sunny D',
       phone: '777-777-7777',
+      texts: [],
       message: "Don't be late!",
       date: '',
       userId: 1,
@@ -63,6 +64,11 @@ class Schedule extends React.Component {
       this.setState({scheduledWorkers})
     }, scheduleId)
   };
+  getTexts(){
+    Client.getTexts((texts) => {
+      this.setState({texts})
+    })
+  }
   mapWorkersToSelectWorkers(workers){
     let selectWorkers = workers.map(function(worker){
       return {
@@ -72,13 +78,17 @@ class Schedule extends React.Component {
         phone: worker.phone
       }
     })
-    this.setState({selectWorkers}, () => console.log(this.state.selectWorkers))
+    this.setState({selectWorkers})
   };
   postSchedule(){
-    Client.postSchedule(this.state.date, this.state.message, (schedule) => {
+    Client.postSchedule(this.state.date, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
     }).then(() => Client.postWorker(this.state.selectWorker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
         this.setState({workers: this.state.workers.concat([worker])})
+      })
+    )
+      .then(() => Client.postText(this.state.message, this.state.schedules[this.state.schedules.length - 1].id, (message) => {
+        this.setState({texts: this.state.texts.concat([message])})
       })
     )
   };
@@ -132,17 +142,20 @@ class Schedule extends React.Component {
   handleSelectWorker(val){
     this.setState({
       selectWorker: val.label
-    }, () => console.log(this.state.selectWorker))
+    })
   };
   clickWorker(worker){
     this.setState({
       worker
-    }, () => console.log(this.state.worker))
+    })
   };
-  componentDidMount(){
+  getSchedulesWorkersAndTexts(){
     this.getSchedules();
     this.getWorkers();
-
+    this.getTexts();
+  };
+  componentDidMount(){
+    this.getSchedulesWorkersAndTexts();
   };
 
   render(){
@@ -152,7 +165,6 @@ class Schedule extends React.Component {
       <Grid>
         <Row>
           <Col md={6}>
-
 
           </Col>
         </Row>
@@ -167,6 +179,7 @@ class Schedule extends React.Component {
             handleEdit={this.handleEdit}
             deleteSchedule={this.deleteSchedule}
             workers={this.state.workers}
+            texts={this.state.texts}
           />
         </Row>
         <Row>
@@ -177,6 +190,7 @@ class Schedule extends React.Component {
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
         <hr />
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
+        <Button bsStyle="info" onClick={this.getTexts.bind(this)}>Get text</Button>
       </Grid>
     )
   }
