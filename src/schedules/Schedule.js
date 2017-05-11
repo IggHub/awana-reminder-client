@@ -25,6 +25,7 @@ class Schedule extends React.Component {
       scheduledWorkers: [],
       worker: 'Sunny D',
       phone: '777-777-7777',
+      message: "Don't be late!",
       date: '',
       userId: 1,
       scheduleId: '',
@@ -40,10 +41,12 @@ class Schedule extends React.Component {
     this.handleCreate = this.handleCreate.bind(this);
     this.handleWorkerName = this.handleWorkerName.bind(this);
     this.handleWorkerPhone = this.handleWorkerPhone.bind(this);
+    this.handleScheduleMessage = this.handleScheduleMessage.bind(this);
     this.handleSelectWorker = this.handleSelectWorker.bind(this);
     this.clickWorker = this.clickWorker.bind(this);
     this.getScheduledWorkers = this.getScheduledWorkers.bind(this);
     this.mapWorkersToSelectWorkers = this.mapWorkersToSelectWorkers.bind(this);
+    this.postMessage = this.postMessage.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -72,7 +75,7 @@ class Schedule extends React.Component {
     this.setState({selectWorkers}, () => console.log(this.state.selectWorkers))
   };
   postSchedule(){
-    Client.postSchedule(this.state.date, (schedule) => {
+    Client.postSchedule(this.state.date, this.state.message, (schedule) => {
       this.setState({schedules: this.state.schedules.concat([schedule])})
     }).then(() => Client.postWorker(this.state.selectWorker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
         this.setState({workers: this.state.workers.concat([worker])})
@@ -83,6 +86,9 @@ class Schedule extends React.Component {
     Client.postWorker(this.state.worker, this.state.scheduleId, () => {
       console.log('hello post worker')
     })
+  };
+  postMessage(){
+    Client.postMessage(this.state.message);
   };
   updateSchedule(){
     Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
@@ -102,7 +108,10 @@ class Schedule extends React.Component {
     this.setState({worker: e.target.value})
   };
   handleWorkerPhone(e){
-    this.setState({phone: e.target.value}, () => console.log(this.state.phone))
+    this.setState({phone: e.target.value})
+  };
+  handleScheduleMessage(e){
+    this.setState({message: e.target.value})
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
@@ -138,7 +147,7 @@ class Schedule extends React.Component {
 
   render(){
     const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} handleWorkerName={this.handleWorkerName} handlWorkerPhone={this.handleWorkerPhone} scheduledWorkers={this.state.scheduledWorkers} /> : <div></div>;
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleWorkerPhone={this.handleWorkerPhone} selectWorkers={this.state.selectWorkers} handleSelectWorker={this.handleSelectWorker} selectWorker={this.state.selectWorker} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleScheduleMessage={this.handleScheduleMessage} handleWorkerPhone={this.handleWorkerPhone} selectWorkers={this.state.selectWorkers} handleSelectWorker={this.handleSelectWorker} selectWorker={this.state.selectWorker} /> : <div></div>;
     return (
       <Grid>
         <Row>
@@ -164,19 +173,10 @@ class Schedule extends React.Component {
           {editSchedule}
           {createSchedule}
         </Row>
-        <h1>Workers</h1>
-
-        <DropdownButton title="Dropdown" id={`dropdown1`}>
-          {this.state.workers.map((worker, index) =>
-            <MenuItem key={index} onClick={() => this.clickWorker(worker.name)} id={index} value={worker.name}>Workers: {worker.name}</MenuItem>
-          )}
-        </DropdownButton>
-        {this.state.scheduledWorkers.map((worker, index) =>
-          <li key={index}>{worker.name}</li>
-        )}
-        <h1>End workers</h1>
 
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
+        <hr />
+        <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )
   }

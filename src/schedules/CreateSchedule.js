@@ -16,21 +16,29 @@ class CreateSchedule extends React.Component {
           <Col md={6} >
             <FormGroup>
               <h1>Create new schedule:</h1>
-              <ControlLabel>Enter Date:</ControlLabel>
-              <FormControl type="date" onChange={this.props.handleDate} />
+              <FormGroup>
+                <ControlLabel>Enter Date:</ControlLabel>
+                <FormControl type="date" onChange={this.props.handleDate} />
+              </FormGroup>
               {/*<p>Date: {this.props.date}</p> */}
-              <br />
-              <ControlLabel>Enter Worker:</ControlLabel>
-              <Creatable
-                name="form-field-name"
-                value={this.props.selectWorker}
-                options={this.props.selectWorkers}
-                onChange={this.props.handleSelectWorker}
-              />
-              <br />
-              <ControlLabel>Enter Phone:</ControlLabel>
-              <FormControl placeholder="Enter phone" onChange={this.props.handleWorkerPhone} />
-              <br />
+              <FormGroup>
+                <ControlLabel>Enter Worker:</ControlLabel>
+                <Creatable
+                  name="form-field-name"
+                  value={this.props.selectWorker}
+                  options={this.props.selectWorkers}
+                  onChange={this.props.handleSelectWorker}
+                />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Enter Phone:</ControlLabel>
+                <FormControl placeholder="Enter phone" onChange={this.props.handleWorkerPhone} />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Enter Message:</ControlLabel>
+                <FormControl componentClass="textarea" placeholder="Enter message here" onChange={this.props.handleScheduleMessage}/>
+              </FormGroup>
+
               <Button bsStyle="info" onClick={this.props.postSchedule}>Submit New</Button>
             </FormGroup>
           </Col>

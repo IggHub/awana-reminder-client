@@ -19,7 +19,7 @@ function getWorkers(cb, schedule_id = null){
     .then(cb)
 };
 
-function postSchedule(date, cb) {
+function postSchedule(date, message, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
     headers: {
@@ -27,6 +27,7 @@ function postSchedule(date, cb) {
     },
     body: JSON.stringify({
       date: date,
+      message: message,
       user_id: 1
     })
   }).then((response) => response.json())
@@ -46,6 +47,18 @@ function postWorker(workerName, workerPhone, scheduleId, cb) {
     })
   }).then((response) => response.json())
     .then(cb);
+};
+
+function postMessage(message){
+  return fetch(`api/texts/send_text`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      message: message
+    })
+  }).then((response) => response.json())
 };
 
 function updateSchedule(scheduleId, date, cb) {
@@ -90,7 +103,8 @@ const Client = {
     updateWorker,
     deleteSchedule,
     getWorkers,
-    postWorker
+    postWorker,
+    postMessage
   };
 
 export default Client;
