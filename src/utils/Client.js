@@ -1,3 +1,5 @@
+import PhoneHelper from './PhoneHelpers';
+
 function getSchedules(cb){
   return fetch(`api/schedules`, {
     headers: {
@@ -45,6 +47,7 @@ function postSchedule(date, cb) {
 };
 
 function postWorker(workerName, workerPhone, scheduleId, cb) {
+  let phone = PhoneHelper.condensePhone(workerPhone);
   return fetch('api/workers', {
     method: 'POST',
     headers: {
@@ -52,7 +55,7 @@ function postWorker(workerName, workerPhone, scheduleId, cb) {
     },
     body: JSON.stringify({
       name: workerName,
-      phone: workerPhone,
+      phone: phone,
       schedule_id: scheduleId//how do I pass the schedule's ID?
     })
   }).then((response) => response.json())
@@ -72,15 +75,18 @@ function postText(message, scheduleId, cb){
     .then(cb);
 };
 
-function postMessage(message){
+function postMessage(message, phone, scheduleId){
   //return fetch(`api/sms`, {... //=> create new class, sms_controller
+  phone = PhoneHelper.condensePhone(phone);
   return fetch(`api/texts/send_text`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      message: message
+      message: message,
+      phone: phone,
+      schedule_id: 10
     })
   }).then((response) => response.json())
 };

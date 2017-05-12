@@ -27,7 +27,7 @@ class CreateSchedule extends React.Component {
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Enter Phone:</ControlLabel>
-                <FormControl placeholder="Enter phone" onChange={this.props.handleWorkerPhone} />
+                <FormControl placeholder="Enter phone in format of (123)-456-7890" onChange={this.props.handleWorkerPhone} />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Enter Message:</ControlLabel>

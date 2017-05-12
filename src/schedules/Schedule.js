@@ -98,7 +98,7 @@ class Schedule extends React.Component {
     })
   };
   postMessage(){
-    Client.postMessage(this.state.message);
+    Client.postMessage(this.state.message, this.state.phone, this.state.scheduleId);
   };
   updateSchedule(){
     Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
@@ -118,7 +118,7 @@ class Schedule extends React.Component {
     this.setState({worker: e.target.value})
   };
   handleWorkerPhone(e){
-    this.setState({phone: e.target.value})
+    this.setState({phone: e.target.value}, () => console.log(this.state.phone))
   };
   handleScheduleMessage(e){
     this.setState({message: e.target.value})
@@ -190,7 +190,6 @@ class Schedule extends React.Component {
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
         <hr />
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
-        <Button bsStyle="info" onClick={this.getTexts.bind(this)}>Get text</Button>
       </Grid>
     )
   }
