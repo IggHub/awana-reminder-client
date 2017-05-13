@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import {Grid, Col, Row} from 'react-bootstrap';
 import Schedule from './schedules/Schedule';
+import ValidationTest from './ValidationTest';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
         <Grid>
           <Row>
             <Col lg={6} md={6} sm={12}>
-              <Schedule />
+              <ValidationTest />
+             <Schedule /> 
+
             </Col>
           </Row>
         </Grid>

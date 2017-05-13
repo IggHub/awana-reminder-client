@@ -4,11 +4,15 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "joi": "10.4.1",
+    "joi-validation-strategy": "0.3.3",
     "react": "^15.5.4",
     "react-bootstrap": "0.31.0",
+    "react-bootstrap-validation": "0.1.11",
     "react-dom": "^15.5.4",
     "react-input-autosize": "1.1.0",
-    "react-select": "1.0.0-rc.3"
+    "react-select": "1.0.0-rc.3",
+    "validator": "7.0.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
