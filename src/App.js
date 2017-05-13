@@ -12,7 +12,7 @@ class App extends Component {
           <Row>
             <Col lg={6} md={6} sm={12}>
               <ValidationTest />
-             <Schedule /> 
+              <Schedule />
 
             </Col>
           </Row>
