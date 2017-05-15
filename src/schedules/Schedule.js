@@ -116,15 +116,19 @@ class Schedule extends React.Component {
   };
   handleDate(e){
     this.setState({date: e.target.value})
+    this.validateSchedule();
   };
   handleWorkerName(e){
-    this.setState({worker: e.target.value})
+    this.setState({worker: e.target.value});
+
   };
   handleWorkerPhone(e){
-    this.setState({phone: e.target.value}, () => console.log(this.state.phone))
+    this.setState({phone: e.target.value}, () => console.log(this.state.phone));
+    this.validateSchedule();
   };
   handleScheduleMessage(e){
-    this.setState({message: e.target.value})
+    this.setState({message: e.target.value});
+    this.validateSchedule();
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
@@ -145,7 +149,8 @@ class Schedule extends React.Component {
   handleSelectWorker(val){
     this.setState({
       selectWorker: val.label
-    })
+    });
+    this.validateSchedule();
   };
   clickWorker(worker){
     this.setState({
@@ -174,7 +179,7 @@ class Schedule extends React.Component {
 
   render(){
     const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} handleWorkerName={this.handleWorkerName} handlWorkerPhone={this.handleWorkerPhone} scheduledWorkers={this.state.scheduledWorkers} /> : <div></div>;
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleScheduleMessage={this.handleScheduleMessage} handleWorkerPhone={this.handleWorkerPhone} selectWorkers={this.state.selectWorkers} handleSelectWorker={this.handleSelectWorker} selectWorker={this.state.selectWorker} validateSchedule={this.validateSchedule} createScheduleErrorMessages={this.state.createScheduleErrorMessages} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleScheduleMessage={this.handleScheduleMessage} handleWorkerPhone={this.handleWorkerPhone} selectWorkers={this.state.selectWorkers} handleSelectWorker={this.handleSelectWorker} selectWorker={this.state.selectWorker} validateSchedule={this.validateSchedule}  createScheduleErrorMessages={this.state.createScheduleErrorMessages} /> : <div></div>;
 
     return (
       <Grid>
