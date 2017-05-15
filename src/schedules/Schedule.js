@@ -147,15 +147,11 @@ class Schedule extends React.Component {
     this.setState({editable: false, creatable: !this.state.creatable})
   };
   handleSelectWorker(val){
-    this.setState({
-      selectWorker: val.label
-    });
+    this.setState({selectWorker: val.label});
     this.validateSchedule();
   };
   clickWorker(worker){
-    this.setState({
-      worker
-    })
+    this.setState({worker})
   };
   getSchedulesWorkersAndTexts(){
     this.getSchedules();
