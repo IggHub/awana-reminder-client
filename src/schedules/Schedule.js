@@ -34,7 +34,6 @@ class Schedule extends React.Component {
       prevId: 0,
       editable: false,
       creatable: true,
-      createScheduleErrorMessages: {},
       dateErrorMessage:'',
       workerErrorMessage: '',
       phoneErrorMessage: '',
@@ -164,10 +163,7 @@ class Schedule extends React.Component {
     this.getSchedules();
     this.getWorkers();
     this.getTexts();
-    this.validateDate();
-    this.validateWorker();
-    this.validatePhone();
-    this.validateMessage();
+
   };
   componentDidMount(){
     this.getSchedulesWorkersAndTexts();
@@ -196,14 +192,10 @@ class Schedule extends React.Component {
     }
   };
   validateSchedule(){
-    const validationErrorMessage = {};
-    if(this.state.message === "") {validationErrorMessage["messageError"] = "Message is empty"}
-    if(this.state.selectWorker === "") {validationErrorMessage["workerNameError"] = "Worker's name is empty"}
-    if(this.state.phone === "") {validationErrorMessage["phoneError"] = "Phone number is empty"}
-    if(this.state.date === "") {validationErrorMessage["dateError"] = "Date is empty"}
-    this.setState({createScheduleErrorMessages: validationErrorMessage}, () => console.log(this.state.createScheduleErrorMessages))
-
-    return validationErrorMessage;
+    this.validateMessage();
+    this.validateDate();
+    this.validatePhone();
+    this.validateWorker();
   };
 
   render(){
@@ -225,7 +217,6 @@ class Schedule extends React.Component {
                                                     handleSelectWorker={this.handleSelectWorker}
                                                     selectWorker={this.state.selectWorker}
                                                     validateSchedule={this.validateSchedule}
-                                                    createScheduleErrorMessages={this.state.createScheduleErrorMessages}
                                                     dateErrorMessage={this.state.dateErrorMessage}
                                                     workerErrorMessage={this.state.workerErrorMessage}
                                                     phoneErrorMessage={this.state.phoneErrorMessage}

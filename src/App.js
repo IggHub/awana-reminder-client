@@ -3,6 +3,7 @@ import {Grid, Col, Row} from 'react-bootstrap';
 import Schedule from './schedules/Schedule';
 import ValidationTest from './ValidationTest';
 
+
 class App extends Component {
 
   render() {
@@ -11,6 +12,7 @@ class App extends Component {
         <Grid>
           <Row>
             <Col lg={6} md={6} sm={12}>
+              <div className="error-message">Test error message</div>
               <ValidationTest />
               <Schedule />
 

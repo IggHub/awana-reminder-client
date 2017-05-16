@@ -1,10 +1,11 @@
 import React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import Creatable from 'react-select';
+import '../Error.css';
 
 class EnterWorkerInput extends React.Component{
   render(){
-    const workerNameError = (this.props.selectWorker === undefined || this.props.selectWorker === "") ? <div>{this.props.workerErrorMessage}</div> : <div></div>
+    const workerNameError = (this.props.selectWorker === undefined || this.props.selectWorker === "") ? <div className="error-message">{this.props.workerErrorMessage}</div> : <div></div>
     console.log("Worker" + this.props.selectWorker);
     return (
       <FormGroup>
