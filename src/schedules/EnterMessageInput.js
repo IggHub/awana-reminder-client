@@ -3,7 +3,7 @@ import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
 class EnterMessageInput extends React.Component {
   render(){
-    const messageError = (!this.props.createScheduleErrorMessages["messageError"]) ? <div>error message for message goes here</div> : <div></div>
+    const messageError = (this.props.message === "") ? <div>{this.props.messageErrorMessage}</div> : <div></div>
     return (
       <FormGroup>
         <ControlLabel>Enter Message:</ControlLabel>

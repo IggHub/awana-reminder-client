@@ -34,7 +34,11 @@ class Schedule extends React.Component {
       prevId: 0,
       editable: false,
       creatable: true,
-      createScheduleErrorMessages: {}
+      createScheduleErrorMessages: {},
+      dateErrorMessage:'',
+      workerErrorMessage: '',
+      phoneErrorMessage: '',
+      messageErrorMessage: ''
     }
     this.handleDate = this.handleDate.bind(this);
     this.postSchedule = this.postSchedule.bind(this);
@@ -51,6 +55,10 @@ class Schedule extends React.Component {
     this.mapWorkersToSelectWorkers = this.mapWorkersToSelectWorkers.bind(this);
     this.postMessage = this.postMessage.bind(this);
     this.validateSchedule = this.validateSchedule.bind(this);
+    this.validateDate = this.validateDate.bind(this);
+    this.validateWorker = this.validateWorker.bind(this);
+    this.validatePhone = this.validatePhone.bind(this);
+    this.validateMessage = this.validateMessage.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -116,19 +124,18 @@ class Schedule extends React.Component {
   };
   handleDate(e){
     this.setState({date: e.target.value})
-    this.validateSchedule();
+    this.validateDate();
   };
   handleWorkerName(e){
     this.setState({worker: e.target.value});
-
   };
   handleWorkerPhone(e){
-    this.setState({phone: e.target.value}, () => console.log(this.state.phone));
-    this.validateSchedule();
+    this.setState({phone: e.target.value});
+    this.validatePhone();
   };
   handleScheduleMessage(e){
     this.setState({message: e.target.value});
-    this.validateSchedule();
+    this.validateMessage();
   };
   handleEdit(id, date){
     this.setState({editable: !this.state.editable, date: date, creatable: false})
@@ -148,7 +155,7 @@ class Schedule extends React.Component {
   };
   handleSelectWorker(val){
     this.setState({selectWorker: val.label});
-    this.validateSchedule();
+    this.validateWorker();
   };
   clickWorker(worker){
     this.setState({worker})
@@ -157,11 +164,37 @@ class Schedule extends React.Component {
     this.getSchedules();
     this.getWorkers();
     this.getTexts();
+    this.validateDate();
+    this.validateWorker();
+    this.validatePhone();
+    this.validateMessage();
   };
   componentDidMount(){
     this.getSchedulesWorkersAndTexts();
   };
 
+  validateDate(){
+    if(this.state.date === "") {
+      this.setState({dateErrorMessage: "date is EMPTY"}, () => console.log("date:" + this.state.date))
+    }
+  };
+
+  validateWorker(){
+    if(this.state.selectWorker === "") {
+      this.setState({workerErrorMessage: "worker is EMPTY"})
+    }
+  };
+
+  validatePhone(){
+    if(this.state.phone === "") {
+      this.setState({phoneErrorMessage: "phone is EMPTY"})
+    };
+  };
+  validateMessage(){
+    if(this.state.message === ""){
+      this.setState({messageErrorMessage: "Message is EMPTY"})
+    }
+  };
   validateSchedule(){
     const validationErrorMessage = {};
     if(this.state.message === "") {validationErrorMessage["messageError"] = "Message is empty"}
@@ -174,8 +207,31 @@ class Schedule extends React.Component {
   };
 
   render(){
-    const editSchedule = this.state.editable ? <UpdateSchedule handleDate={this.handleDate} date={this.state.date} updateSchedule={this.updateSchedule} handleWorkerName={this.handleWorkerName} handlWorkerPhone={this.handleWorkerPhone} scheduledWorkers={this.state.scheduledWorkers} /> : <div></div>;
-    const createSchedule = this.state.creatable? <CreateSchedule handleDate={this.handleDate} date={this.state.date} postSchedule={this.postSchedule} handleWorkerName={this.handleWorkerName} handleScheduleMessage={this.handleScheduleMessage} handleWorkerPhone={this.handleWorkerPhone} selectWorkers={this.state.selectWorkers} handleSelectWorker={this.handleSelectWorker} selectWorker={this.state.selectWorker} validateSchedule={this.validateSchedule}  createScheduleErrorMessages={this.state.createScheduleErrorMessages} /> : <div></div>;
+    const editSchedule = this.state.editable ? <UpdateSchedule
+                                                    handleDate={this.handleDate}
+                                                    date={this.state.date}
+                                                    updateSchedule={this.updateSchedule}
+                                                    handleWorkerName={this.handleWorkerName}
+                                                    handlWorkerPhone={this.handleWorkerPhone}
+                                                    scheduledWorkers={this.state.scheduledWorkers} /> : <div></div>;
+    const createSchedule = this.state.creatable? <CreateSchedule
+                                                    handleDate={this.handleDate}
+                                                    date={this.state.date}
+                                                    postSchedule={this.postSchedule}
+                                                    handleWorkerName={this.handleWorkerName}
+                                                    handleScheduleMessage={this.handleScheduleMessage}
+                                                    handleWorkerPhone={this.handleWorkerPhone}
+                                                    selectWorkers={this.state.selectWorkers}
+                                                    handleSelectWorker={this.handleSelectWorker}
+                                                    selectWorker={this.state.selectWorker}
+                                                    validateSchedule={this.validateSchedule}
+                                                    createScheduleErrorMessages={this.state.createScheduleErrorMessages}
+                                                    dateErrorMessage={this.state.dateErrorMessage}
+                                                    workerErrorMessage={this.state.workerErrorMessage}
+                                                    phoneErrorMessage={this.state.phoneErrorMessage}
+                                                    messageErrorMessage={this.state.messageErrorMessage}
+                                                    phone={this.state.phone}
+                                                    message={this.state.message} /> : <div></div>;
 
     return (
       <Grid>

@@ -3,7 +3,7 @@ import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
 class EnterPhoneInput extends React.Component{
   render(){
-    const phoneError = (!this.props.createScheduleErrorMessages["phoneError"]) ? <div>error message for phone goes here</div> : <div></div>
+    const phoneError = (this.props.phone === "") ? <div>{this.props.phoneErrorMessage}</div> : <div></div>
     return (
       <FormGroup>
         <ControlLabel>Enter Phone:</ControlLabel>

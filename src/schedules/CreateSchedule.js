@@ -12,22 +12,17 @@ class CreateSchedule extends React.Component {
     //this.props.validateSchedule();
   }
   render(){
-
-    const dateError = (!this.props.createScheduleErrorMessages["dateError"]) ? <div>error message for date goes here</div> : <div></div>
-    const workerNameError = (!this.props.createScheduleErrorMessages["workerNameError"]) ? <div>error message for worker's name goes here</div> : <div></div>
-    const phoneError = (!this.props.createScheduleErrorMessages["phoneError"]) ? <div>error message for phone goes here</div> : <div></div>
-    const messageError = (!this.props.createScheduleErrorMessages["messageError"]) ? <div>error message for message goes here</div> : <div></div>
     return (
       <Grid>
         <Row>
           <Col md={6} >
 
               <h1>Create new schedule:</h1>
-              
-              <EnterDateInput createScheduleErrorMessages={this.props.createScheduleErrorMessages} handleDate={this.props.handleDate}/>
-              <EnterWorkerInput createScheduleErrorMessages={this.props.createScheduleErrorMessages} selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} />
-              <EnterPhoneInput createScheduleErrorMessages={this.props.createScheduleErrorMessages} handleWorkerPhone={this.props.handleWorkerPhone} />
-              <EnterMessageInput createScheduleErrorMessages={this.props.createScheduleErrorMessages} handleScheduleMessage={this.props.handleScheduleMessage} />
+
+              <EnterDateInput handleDate={this.props.handleDate} dateErrorMessage={this.props.dateErrorMessage} date={this.props.date}/>
+              <EnterWorkerInput selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} />
+              <EnterPhoneInput handleWorkerPhone={this.props.handleWorkerPhone} phone={this.props.phone} phoneErrorMessage={this.props.phoneErrorMessage} />
+              <EnterMessageInput message={this.props.message} handleScheduleMessage={this.props.handleScheduleMessage} messageErrorMessage={this.props.messageErrorMessage} />
 
               <Button bsStyle="info" onClick={this.props.validateSchedule}>Validate!</Button>
               <Button bsStyle="info" onClick={this.props.postSchedule}>Submit New</Button>

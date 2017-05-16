@@ -4,7 +4,8 @@ import Creatable from 'react-select';
 
 class EnterWorkerInput extends React.Component{
   render(){
-    const workerNameError = (!this.props.createScheduleErrorMessages["workerNameError"]) ? <div>error message for workers name goes here</div> : <div></div>
+    const workerNameError = (this.props.selectWorker === undefined || this.props.selectWorker === "") ? <div>{this.props.workerErrorMessage}</div> : <div></div>
+    console.log("Worker" + this.props.selectWorker);
     return (
       <FormGroup>
         <ControlLabel>Enter Worker:</ControlLabel>

@@ -3,7 +3,7 @@ import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
 class EnterDateInput extends React.Component {
   render(){
-    const dateError = (!this.props.createScheduleErrorMessages["dateError"]) ? <div>error message for date goes here</div> : <div></div>
+    const dateError = (this.props.date === "") ? <div>{this.props.dateErrorMessage}</div> : <div></div>
     return (
       <FormGroup>
         <ControlLabel>Enter Date:</ControlLabel>
