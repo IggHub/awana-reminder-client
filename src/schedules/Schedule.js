@@ -5,7 +5,6 @@ import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
-import PhoneHelper from '../utils/PhoneHelpers';
 
 const addButtonStyle={
   position: 'fixed',
@@ -37,7 +36,8 @@ class Schedule extends React.Component {
       dateErrorMessage:'',
       workerErrorMessage: '',
       phoneErrorMessage: '',
-      messageErrorMessage: ''
+      messageErrorMessage: '',
+      validationPoints: 1
     }
     this.handleDate = this.handleDate.bind(this);
     this.postSchedule = this.postSchedule.bind(this);
@@ -184,22 +184,20 @@ class Schedule extends React.Component {
   validateWorker(){
     if (this.state.selectWorker.length >= 70) {
       this.setState({workerErrorMessage: "worker name is too long"});
-    } else if(this.state.selectWorker === "") {
+    } else if(this.state.selectWorker === "" || this.state.selectWorker === undefined) {
       this.setState({workerErrorMessage: "worker is EMPTY"});
+    } else if(this.state.selectWorker.length < 70) {
+      this.setState({validationPoints: 0})
     }
   };
 
   validatePhone(){
-    if (PhoneHelper.condensePhone(this.state.phone).length >= 10) {
-      this.setState({phoneErrorMessage: "phone is too long"})
-    } else if(this.state.phone.length === 0) {
+    if(this.state.phone.length === 0) {
       this.setState({phoneErrorMessage: "phone is EMPTY"})
     }
   };
   validateMessage(){
-    if(this.state.message.length > 140) {
-      this.setState({messageErrorMessage: "Message exceeds 140 characters limit"});
-    } else if (this.state.message === ""){
+    if (this.state.message === ""){
       this.setState({messageErrorMessage: "Message is EMPTY"})
     }
   };
