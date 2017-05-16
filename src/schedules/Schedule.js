@@ -6,6 +6,8 @@ import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
 
+import '../Buttons.css';
+
 const addButtonStyle={
   position: 'fixed',
   bottom: '25px',
@@ -37,7 +39,7 @@ class Schedule extends React.Component {
       workerErrorMessage: '',
       phoneErrorMessage: '',
       messageErrorMessage: '',
-      validationPoints: 1
+      workerHolderCounter: 1
     }
     this.handleDate = this.handleDate.bind(this);
     this.postSchedule = this.postSchedule.bind(this);
@@ -59,6 +61,8 @@ class Schedule extends React.Component {
     this.validatePhone = this.validatePhone.bind(this);
     this.validateMessage = this.validateMessage.bind(this);
     this.handleValidationState = this.handleValidationState.bind(this);
+    this.incrementWorkerHolderCounter = this.incrementWorkerHolderCounter.bind(this);
+    this.decrementWorkerHolderCounter = this.decrementWorkerHolderCounter.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -165,11 +169,16 @@ class Schedule extends React.Component {
   clickWorker(worker){
     this.setState({worker})
   };
+  incrementWorkerHolderCounter(){
+    this.setState({workerHolderCounter: this.state.workerHolderCounter + 1})
+  };
+  decrementWorkerHolderCounter(){
+    this.setState({workerHolderCounter: this.state.workerHolderCounter - 1})
+  };
   getSchedulesWorkersAndTexts(){
     this.getSchedules();
     this.getWorkers();
     this.getTexts();
-
   };
   componentDidMount(){
     this.getSchedulesWorkersAndTexts();
@@ -240,13 +249,17 @@ class Schedule extends React.Component {
                                                     messageErrorMessage={this.state.messageErrorMessage}
                                                     phone={this.state.phone}
                                                     message={this.state.message}
-                                                    validatePhone={this.validatePhone} /> : <div></div>;
+                                                    validatePhone={this.validatePhone}
+                                                    workerHolderCounter={this.state.workerHolderCounter}
+                                                    incrementWorkerHolderCounter={this.incrementWorkerHolderCounter}
+                                                    decrementWorkerHolderCounter={this.decrementWorkerHolderCounter} /> : <div></div>;
 
     return (
       <Grid>
         <Row>
           <Col><h1>Hello from schedulejS!</h1></Col>
         </Row>
+
         <Row>
           <DisplaySchedules
             schedules={this.state.schedules}
@@ -256,6 +269,7 @@ class Schedule extends React.Component {
             texts={this.state.texts}
           />
         </Row>
+
         <Row>
           {editSchedule}
           {createSchedule}

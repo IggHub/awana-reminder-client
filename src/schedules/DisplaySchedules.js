@@ -51,6 +51,7 @@ class DisplaySchedules extends React.Component{
                   </Col>
                   <Col xs={4} xsOffset={2}>
                     <Button bsStyle="danger" onClick={() => this.props.deleteSchedule(schedule.id)}>Delete</Button>
+                    <Button bsStyle="info" onClick={() => console.log(this.props.workers)}>Display workers</Button>
                   </Col>
                 </Row>
               </Col>

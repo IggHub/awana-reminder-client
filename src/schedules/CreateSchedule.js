@@ -11,6 +11,12 @@ class CreateSchedule extends React.Component {
     //this.props.validateSchedule();
   }
   render(){
+    var workerHolder = [];
+    for(var i = 0; i < this.props.workerHolderCounter; i++){
+      workerHolder.push(
+          <EnterWorkerInput key={i} selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} incrementWorkerHolderCounter={this.props.incrementWorkerHolderCounter} decrementWorkerHolderCounter={this.props.decrementWorkerHolderCounter} />
+      )
+    }
     return (
       <Grid>
         <Row>
@@ -19,7 +25,7 @@ class CreateSchedule extends React.Component {
               <h1>Create new schedule:</h1>
 
               <EnterDateInput handleDate={this.props.handleDate} dateErrorMessage={this.props.dateErrorMessage} date={this.props.date}/>
-              <EnterWorkerInput selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} />
+              {workerHolder}
               <EnterPhoneInput handleWorkerPhone={this.props.handleWorkerPhone} phone={this.props.phone} phoneErrorMessage={this.props.phoneErrorMessage} validatePhone={this.props.validatePhone} />
               <EnterMessageInput message={this.props.message} handleScheduleMessage={this.props.handleScheduleMessage} messageErrorMessage={this.props.messageErrorMessage} />
 

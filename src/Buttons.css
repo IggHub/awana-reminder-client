@@ -1,0 +1,11 @@
+.button-circle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 25px
+}
+
+.add-worker {
+  
+  border-radius: 25px
+}
