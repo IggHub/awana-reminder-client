@@ -5,7 +5,7 @@ import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
-
+import PhoneHelper from '../utils/PhoneHelpers';
 
 const addButtonStyle={
   position: 'fixed',
@@ -58,6 +58,7 @@ class Schedule extends React.Component {
     this.validateWorker = this.validateWorker.bind(this);
     this.validatePhone = this.validatePhone.bind(this);
     this.validateMessage = this.validateMessage.bind(this);
+    this.handleValidationState = this.handleValidationState.bind(this);
   };
   getSchedules(){
     Client.getSchedules((schedules) => {
@@ -91,16 +92,21 @@ class Schedule extends React.Component {
     this.setState({selectWorkers})
   };
   postSchedule(){
-    Client.postSchedule(this.state.date, (schedule) => {
-      this.setState({schedules: this.state.schedules.concat([schedule])})
-    }).then(() => Client.postWorker(this.state.selectWorker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
-        this.setState({workers: this.state.workers.concat([worker])})
-      })
-    )
-      .then(() => Client.postText(this.state.message, this.state.schedules[this.state.schedules.length - 1].id, (message) => {
-        this.setState({texts: this.state.texts.concat([message])})
-      })
-    )
+    //if it fails validation, don't submit. If it passes validation, do the below:
+    if(this.state.date === "" || this.state.message === "" || this.state.phone === "" || this.state.selectWorker === undefined || this.state.selectWorker === ""){
+      console.log("ERROR! One or more fields are blank")
+    } else {
+      Client.postSchedule(this.state.date, (schedule) => {
+        this.setState({schedules: this.state.schedules.concat([schedule])})
+      }).then(() => Client.postWorker(this.state.selectWorker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
+          this.setState({workers: this.state.workers.concat([worker])})
+        })
+      )
+        .then(() => Client.postText(this.state.message, this.state.schedules[this.state.schedules.length - 1].id, (message) => {
+          this.setState({texts: this.state.texts.concat([message])})
+        })
+      )
+    }
   };
   postWorker(){
     Client.postWorker(this.state.worker, this.state.scheduleId, () => {
@@ -176,18 +182,24 @@ class Schedule extends React.Component {
   };
 
   validateWorker(){
-    if(this.state.selectWorker === "") {
-      this.setState({workerErrorMessage: "worker is EMPTY"})
+    if (this.state.selectWorker.length >= 70) {
+      this.setState({workerErrorMessage: "worker name is too long"});
+    } else if(this.state.selectWorker === "") {
+      this.setState({workerErrorMessage: "worker is EMPTY"});
     }
   };
 
   validatePhone(){
-    if(this.state.phone === "") {
+    if (PhoneHelper.condensePhone(this.state.phone).length >= 10) {
+      this.setState({phoneErrorMessage: "phone is too long"})
+    } else if(this.state.phone.length === 0) {
       this.setState({phoneErrorMessage: "phone is EMPTY"})
-    };
+    }
   };
   validateMessage(){
-    if(this.state.message === ""){
+    if(this.state.message.length > 140) {
+      this.setState({messageErrorMessage: "Message exceeds 140 characters limit"});
+    } else if (this.state.message === ""){
       this.setState({messageErrorMessage: "Message is EMPTY"})
     }
   };
@@ -196,6 +208,13 @@ class Schedule extends React.Component {
     this.validateDate();
     this.validatePhone();
     this.validateWorker();
+  };
+  handleValidationState(validatee){
+    if(validatee === "" || validatee === undefined){
+      return "error"
+    } else {
+      return "success"
+    }
   };
 
   render(){
@@ -222,7 +241,8 @@ class Schedule extends React.Component {
                                                     phoneErrorMessage={this.state.phoneErrorMessage}
                                                     messageErrorMessage={this.state.messageErrorMessage}
                                                     phone={this.state.phone}
-                                                    message={this.state.message} /> : <div></div>;
+                                                    message={this.state.message}
+                                                    validatePhone={this.validatePhone} /> : <div></div>;
 
     return (
       <Grid>

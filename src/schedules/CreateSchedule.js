@@ -1,6 +1,5 @@
 import React from 'react';
-import {Grid, Col, Row, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
-import {Creatable} from 'react-select';
+import {Grid, Col, Row, Button} from 'react-bootstrap';
 import 'react-select/dist/react-select.css';
 import EnterDateInput from './EnterDateInput';
 import EnterWorkerInput from './EnterWorkerInput';
@@ -21,7 +20,7 @@ class CreateSchedule extends React.Component {
 
               <EnterDateInput handleDate={this.props.handleDate} dateErrorMessage={this.props.dateErrorMessage} date={this.props.date}/>
               <EnterWorkerInput selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} />
-              <EnterPhoneInput handleWorkerPhone={this.props.handleWorkerPhone} phone={this.props.phone} phoneErrorMessage={this.props.phoneErrorMessage} />
+              <EnterPhoneInput handleWorkerPhone={this.props.handleWorkerPhone} phone={this.props.phone} phoneErrorMessage={this.props.phoneErrorMessage} validatePhone={this.props.validatePhone} />
               <EnterMessageInput message={this.props.message} handleScheduleMessage={this.props.handleScheduleMessage} messageErrorMessage={this.props.messageErrorMessage} />
 
               <Button bsStyle="info" onClick={this.props.validateSchedule}>Validate!</Button>

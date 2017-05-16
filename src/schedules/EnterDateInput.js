@@ -9,7 +9,7 @@ class EnterDateInput extends React.Component {
       <FormGroup>
         <ControlLabel>Enter Date:</ControlLabel>
         <FormControl type="date" onChange={this.props.handleDate} />
-        {dateError}
+        <div className="error-message">{dateError}</div>
       </FormGroup>
     )
   }
