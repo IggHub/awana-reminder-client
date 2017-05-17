@@ -12,9 +12,9 @@ class CreateSchedule extends React.Component {
   }
   render(){
     var workerHolder = [];
-    for(var i = 0; i < this.props.workerHolderCounter; i++){
+    for(var i = 1; i <= this.props.workerHolderCounter; i++){
       workerHolder.push(
-          <EnterWorkerInput key={i} selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} incrementWorkerHolderCounter={this.props.incrementWorkerHolderCounter} decrementWorkerHolderCounter={this.props.decrementWorkerHolderCounter} />
+        <EnterWorkerInput key={i} workerHolderCounter={this.props.workerHolderCounter} selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} incrementWorkerHolderCounter={this.props.incrementWorkerHolderCounter} decrementWorkerHolderCounter={this.props.decrementWorkerHolderCounter} />
       )
     }
     return (

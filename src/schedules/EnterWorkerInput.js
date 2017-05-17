@@ -5,30 +5,9 @@ import '../Error.css';
 import '../Buttons.css';
 
 class EnterWorkerInput extends React.Component{
-  constructor(){
-    super();
-    this.state = {
-      showAdd: true
-    };
-    this.toggleButtons = this.toggleButtons.bind(this);
-    this.toggleButtonsAndIncrementWorker = this.toggleButtonsAndIncrementWorker.bind(this);
-    this.toggleButtonsAndDecrementWorker = this.toggleButtonsAndDecrementWorker.bind(this);
-  }
-  toggleButtons(){
-    this.setState({showAdd: !this.state.showAdd})
-  };
-  toggleButtonsAndIncrementWorker(){
-    this.toggleButtons();
-    this.props.incrementWorkerHolderCounter();
-  };
-  toggleButtonsAndDecrementWorker(){
-    this.setState({showAdd: false})
-    this.props.decrementWorkerHolderCounter();
-  }
   render(){
-    const showCorrectButton = this.state.showAdd ? <Button onClick={this.toggleButtonsAndIncrementWorker} className="add-worker" bsStyle="info">+</Button> : <Button onClick={this.toggleButtonsAndDecrementWorker} className="add-worker" bsStyle="danger">-</Button>
     const workerNameError = (this.props.selectWorker === undefined || this.props.selectWorker === "" || this.props.selectWorker.length > 70) ? <div className="error-message">{this.props.workerErrorMessage}</div> : <div></div>
-
+    const twoButtons = <div><Button onClick={this.props.incrementWorkerHolderCounter} className="add-worker" bsStyle="info">+</Button> <Button onClick={this.props.decrementWorkerHolderCounter} className="add-worker" bsStyle="danger">-</Button></div>
     return (
       <FormGroup>
         <ControlLabel>Enter Worker:</ControlLabel>
@@ -41,8 +20,8 @@ class EnterWorkerInput extends React.Component{
               onChange={this.props.handleSelectWorker}
             />
             </Col>
-            <Col md={2} mdOffset={1}>
-              {showCorrectButton}
+            <Col md={3} mdOffset={1}>
+              {twoButtons}
             </Col>
           </Row>
         {workerNameError}

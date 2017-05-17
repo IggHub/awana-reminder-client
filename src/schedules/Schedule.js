@@ -170,10 +170,18 @@ class Schedule extends React.Component {
     this.setState({worker})
   };
   incrementWorkerHolderCounter(){
-    this.setState({workerHolderCounter: this.state.workerHolderCounter + 1})
+    if (this.state.workerHolderCounter < 3) {
+      this.setState({workerHolderCounter: this.state.workerHolderCounter + 1}, () => console.log(this.state.workerHolderCounter))
+    } else {
+      console.log("Can't put too many workers!")
+    }
   };
   decrementWorkerHolderCounter(){
-    this.setState({workerHolderCounter: this.state.workerHolderCounter - 1})
+    if (this.state.workerHolderCounter > 1) {
+      this.setState({workerHolderCounter: this.state.workerHolderCounter - 1}, () => console.log(this.state.workerHolderCounter))
+    } else {
+      console.log("Need to have at least a worker!")
+    }
   };
   getSchedulesWorkersAndTexts(){
     this.getSchedules();
