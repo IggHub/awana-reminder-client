@@ -6,9 +6,12 @@
   "dependencies": {
     "joi": "10.4.1",
     "joi-validation-strategy": "0.3.3",
+    "moment": "2.18.1",
     "react": "^15.5.4",
     "react-bootstrap": "0.31.0",
+    "react-bootstrap-datetimepicker": "0.0.22",
     "react-bootstrap-validation": "0.1.11",
+    "react-datetime": "2.8.10",
     "react-dom": "^15.5.4",
     "react-input-autosize": "1.1.0",
     "react-select": "1.0.0-rc.3",

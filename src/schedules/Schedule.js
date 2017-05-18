@@ -131,8 +131,8 @@ class Schedule extends React.Component {
       this.getSchedules();
     })
   };
-  handleDate(e){
-    this.setState({date: e.target.value})
+  handleDate(date){
+    this.setState({date: date._d}, () => console.log(this.state.date));
     this.validateDate();
   };
   handleWorkerName(e){
@@ -194,7 +194,7 @@ class Schedule extends React.Component {
 
   validateDate(){
     if(this.state.date === "") {
-      this.setState({dateErrorMessage: "date is EMPTY"}, () => console.log("date:" + this.state.date))
+      this.setState({dateErrorMessage: "date is EMPTY"})
     }
   };
 
@@ -265,7 +265,9 @@ class Schedule extends React.Component {
     return (
       <Grid>
         <Row>
-          <Col><h1>Hello from schedulejS!</h1></Col>
+          <Col>
+            <h1>Schedules:</h1>
+          </Col>
         </Row>
 
         <Row>
@@ -285,6 +287,7 @@ class Schedule extends React.Component {
 
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
         <hr />
+        <Button bsStyle="danger" onClick={() => console.log(this.state.date)}>Get date</Button>
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )

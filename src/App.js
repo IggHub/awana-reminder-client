@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Grid, Col, Row} from 'react-bootstrap';
 import Schedule from './schedules/Schedule';
-import ValidationTest from './ValidationTest';
+//import ValidationTest from './ValidationTest';
 
 
 class App extends Component {
@@ -12,8 +12,7 @@ class App extends Component {
         <Grid>
           <Row>
             <Col lg={6} md={6} sm={12}>
-              <div className="error-message">Test error message</div>
-              <ValidationTest />
+
               <Schedule />
 
             </Col>

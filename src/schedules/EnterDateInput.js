@@ -1,6 +1,8 @@
 import React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import {FormGroup, ControlLabel} from 'react-bootstrap';
+import DateTime from 'react-datetime';
 import '../Error.css';
+import '../DateTime.css';
 
 class EnterDateInput extends React.Component {
   render(){
@@ -8,7 +10,7 @@ class EnterDateInput extends React.Component {
     return (
       <FormGroup>
         <ControlLabel>Enter Date:</ControlLabel>
-        <FormControl type="date" onChange={this.props.handleDate} />
+        <DateTime onChange={this.props.handleDate}/>
         <div className="error-message">{dateError}</div>
       </FormGroup>
     )
