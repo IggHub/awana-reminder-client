@@ -5,7 +5,7 @@ import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
-
+import moment from 'moment';
 import '../Buttons.css';
 
 const addButtonStyle={
@@ -30,6 +30,7 @@ class Schedule extends React.Component {
       texts: [],
       message: "",
       date: '',
+      reminderDate: '',
       userId: 1,
       scheduleId: '',
       prevId: 0,
@@ -132,7 +133,9 @@ class Schedule extends React.Component {
     })
   };
   handleDate(date){
-    this.setState({date: date._d}, () => console.log(this.state.date));
+    const dateTime = date.set({'hour': 19, 'minute': 0, 'second': 0})
+    const dateTimeYesterday = dateTime.subtract(1, 'day');
+    this.setState({reminderDate: dateTimeYesterday._d, date: dateTime._d});
     this.validateDate();
   };
   handleWorkerName(e){
