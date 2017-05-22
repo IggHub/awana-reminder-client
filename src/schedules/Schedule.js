@@ -5,7 +5,7 @@ import Client from '../utils/Client';
 import DisplaySchedules from './DisplaySchedules';
 import CreateSchedule from './CreateSchedule';
 import UpdateSchedule from './UpdateSchedule';
-import moment from 'moment';
+
 import '../Buttons.css';
 
 const addButtonStyle={
@@ -25,6 +25,7 @@ class Schedule extends React.Component {
       selectWorkers: [],
       selectWorker: '',
       scheduledWorkers: [],
+      rosters: [],
       worker: '',
       phone: '',
       texts: [],
@@ -84,7 +85,12 @@ class Schedule extends React.Component {
     Client.getTexts((texts) => {
       this.setState({texts})
     })
-  }
+  };
+  getRosters(){
+    Client.getRosters((rosters) => {
+      this.setState({rosters})
+    })
+  };
   mapWorkersToSelectWorkers(workers){
     let selectWorkers = workers.map(function(worker){
       return {
@@ -133,9 +139,10 @@ class Schedule extends React.Component {
     })
   };
   handleDate(date){
+    const dateClone = date;
     const dateTime = date.set({'hour': 19, 'minute': 0, 'second': 0})
-    const dateTimeYesterday = dateTime.subtract(1, 'day');
-    this.setState({reminderDate: dateTimeYesterday._d, date: dateTime._d});
+    const dateTimeYesterday = dateClone.set({'hour': 19, 'minute': 0, 'second': 0}).subtract(1, 'day');
+    this.setState({reminderDate: dateTimeYesterday._d, date: date.set({'hour': 19, 'minute': 0, 'second': 0})._d}, () => console.log(this.state.date));
     this.validateDate();
   };
   handleWorkerName(e){
@@ -189,6 +196,7 @@ class Schedule extends React.Component {
   getSchedulesWorkersAndTexts(){
     this.getSchedules();
     this.getWorkers();
+    this.getRosters();
     this.getTexts();
   };
   componentDidMount(){
@@ -279,6 +287,7 @@ class Schedule extends React.Component {
             handleEdit={this.handleEdit}
             deleteSchedule={this.deleteSchedule}
             workers={this.state.workers}
+            rosters={this.state.rosters}
             texts={this.state.texts}
           />
         </Row>
@@ -290,7 +299,7 @@ class Schedule extends React.Component {
 
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
         <hr />
-        <Button bsStyle="danger" onClick={() => console.log(this.state.date)}>Get date</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.rosters)}>Get Rosters</Button>
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )

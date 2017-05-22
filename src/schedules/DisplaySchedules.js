@@ -5,6 +5,12 @@ const thumbnailStyle= {
   height: '350px'
 };
 
+const findWorkerById = function(workerId) {
+    return function(worker) {
+        return worker.id === workerId;
+    }
+};
+
 class DisplaySchedules extends React.Component{
   render(){
     return (
@@ -21,12 +27,10 @@ class DisplaySchedules extends React.Component{
             </Row>
             <Row>
               <Col xs={10} xsOffset={1}>
-                <h3>Workers:</h3>
-                {this.props.workers.filter(function(worker){
-                  return worker.schedule_id === schedule.id
-                  })
-                  .map((worker, index) => {
-                    return <h6 key={index}>{worker.name} - ({worker.phone ? worker.phone : "No Phone"})</h6>
+                {this.props.rosters.filter((roster) => {
+                    return schedule.id === roster.schedule_id
+                  }).map((roster, index) => {
+                    return <h6 key={index}>{this.props.workers.find(findWorkerById(roster.worker_id)).name}</h6>
                   })
                 }
               </Col>
@@ -51,7 +55,7 @@ class DisplaySchedules extends React.Component{
                   </Col>
                   <Col xs={4} xsOffset={2}>
                     <Button bsStyle="danger" onClick={() => this.props.deleteSchedule(schedule.id)}>Delete</Button>
-                    
+
                   </Col>
                 </Row>
               </Col>
@@ -59,6 +63,7 @@ class DisplaySchedules extends React.Component{
           </Thumbnail>
         </Col>
       )}
+      <button onClick={() => console.log(this.props.workers)}>Show rosters</button>
       </div>
     )
   }
