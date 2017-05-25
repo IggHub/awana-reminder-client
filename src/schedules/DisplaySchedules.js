@@ -27,24 +27,20 @@ class DisplaySchedules extends React.Component{
             </Row>
             <Row>
               <Col xs={10} xsOffset={1}>
-                {this.props.rosters.filter((roster) => {
-                    return schedule.id === roster.schedule_id
-                  }).map((roster, index) => {
-                    return <h6 key={index}>{this.props.workers.find(findWorkerById(roster.worker_id)).name}</h6>
-                  })
-                }
+                <h4>Workers:</h4>
+                {this.props.workers.filter(function(worker){
+                  return worker.schedule_id === schedule.id
+                })
+                .map((worker, index) =>
+                  <h6 key={index}>{worker.name}</h6>
+                )
+              }
               </Col>
             </Row>
             <Row>
               <Col xs={10} xsOffset={1}>
                 <h3>Message:</h3>
-                  {this.props.texts.filter(function(text){
-                    return text.schedule_id === schedule.id
-                  })
-                  .map((text, index) => {
-                    return <h6 key={index}>{text.message}</h6>
-                  })
-                }
+                  {schedule.message}
               </Col>
             </Row>
             <Row>
@@ -63,7 +59,8 @@ class DisplaySchedules extends React.Component{
           </Thumbnail>
         </Col>
       )}
-      <button onClick={() => console.log(this.props.workers)}>Show rosters</button>
+      <button onClick={() => console.log(this.props.workers)}>Show workers</button>
+      <button onClick={() => console.log(this.props.schedules)}>Show schedules</button>
       </div>
     )
   }

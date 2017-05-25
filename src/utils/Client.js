@@ -42,7 +42,7 @@ function getRosters(cb) {
     .then(cb)
 };
 
-function postSchedule(date, cb) {
+function postSchedule(date, message, phone, workerName, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
     headers: {
@@ -50,7 +50,9 @@ function postSchedule(date, cb) {
     },
     body: JSON.stringify({
       date: date,
-      user_id: 1
+      message: message,
+      user_id: 1,
+      worker_info: {name: workerName, phone: phone}
     })
   }).then((response) => response.json())
     .then(cb);

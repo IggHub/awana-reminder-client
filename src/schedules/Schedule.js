@@ -107,7 +107,7 @@ class Schedule extends React.Component {
     if(this.state.date === "" || this.state.message === "" || this.state.phone === "" || this.state.selectWorker === undefined || this.state.selectWorker === ""){
       console.log("ERROR! One or more fields are blank")
     } else {
-      Client.postSchedule(this.state.date, (schedule) => {
+      Client.postSchedule(this.state.date, this.state.message, this.state.phone, this.state.selectWorker, (schedule) => {
         this.setState({schedules: this.state.schedules.concat([schedule])})
       })
     }
@@ -192,8 +192,8 @@ class Schedule extends React.Component {
   getSchedulesWorkersAndTexts(){
     this.getSchedules();
     this.getWorkers();
-    this.getRosters();
-    this.getTexts();
+    //this.getRosters();
+    //this.getTexts();
   };
   componentDidMount(){
     this.getSchedulesWorkersAndTexts();
@@ -295,7 +295,11 @@ class Schedule extends React.Component {
 
         <Button onClick={this.handleCreate} style={addButtonStyle} className="button-circle" bsStyle="info" bsSize="large">+</Button>
         <hr />
-        <Button bsStyle="danger" onClick={() => console.log(this.state.rosters)}>Get Rosters</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.workers)}>Get workers</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.schedules)}>Get schedules</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.message)}>Get message</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.selectWorker)}>Get name</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.phone)}>Get phone</Button>
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )
