@@ -109,20 +109,16 @@ class Schedule extends React.Component {
     } else {
       Client.postSchedule(this.state.date, (schedule) => {
         this.setState({schedules: this.state.schedules.concat([schedule])})
-      }).then(() => Client.postWorker(this.state.selectWorker, this.state.phone, this.state.schedules[this.state.schedules.length - 1].id, (worker) => {
-          this.setState({workers: this.state.workers.concat([worker])})
-        })
-      )
-        .then(() => Client.postText(this.state.message, this.state.schedules[this.state.schedules.length - 1].id, (message) => {
-          this.setState({texts: this.state.texts.concat([message])})
-        })
-      )
+      })
     }
   };
   postWorker(){
     Client.postWorker(this.state.worker, this.state.scheduleId, () => {
       console.log('hello post worker')
     })
+  };
+  postNestedAttributes(){
+
   };
   postMessage(){
     Client.postMessage(this.state.message, this.state.phone, this.state.scheduleId);

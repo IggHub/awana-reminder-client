@@ -86,7 +86,6 @@ function postText(message, scheduleId, cb){
 };
 
 function postMessage(message, phone, scheduleId){
-  //return fetch(`api/sms`, {... //=> create new class, sms_controller
   phone = PhoneHelper.condensePhone(phone);
   return fetch(`api/texts/send_text`, {
     method: 'POST',
@@ -96,7 +95,20 @@ function postMessage(message, phone, scheduleId){
     body: JSON.stringify({
       message: message,
       phone: phone,
-      schedule_id: 10
+      schedule_id: scheduleId
+    })
+  }).then((response) => response.json())
+};
+
+function postRoster(scheduleId, workerId, cb){
+  return fetch(`api/rosters`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      schedule_id: scheduleId,
+      worker_id: workerId
     })
   }).then((response) => response.json())
 };
@@ -161,7 +173,8 @@ const Client = {
     postSchedule,
     postWorker,
     postMessage,
-    postText
+    postText,
+    postRoster
   };
 
 export default Client;
