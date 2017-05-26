@@ -5,12 +5,6 @@ const thumbnailStyle= {
   height: '350px'
 };
 
-const findWorkerById = function(workerId) {
-    return function(worker) {
-        return worker.id === workerId;
-    }
-};
-
 class DisplaySchedules extends React.Component{
   render(){
     return (
@@ -59,8 +53,6 @@ class DisplaySchedules extends React.Component{
           </Thumbnail>
         </Col>
       )}
-      <button onClick={() => console.log(this.props.workers)}>Show workers</button>
-      <button onClick={() => console.log(this.props.schedules)}>Show schedules</button>
       </div>
     )
   }

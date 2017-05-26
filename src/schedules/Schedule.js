@@ -25,6 +25,7 @@ class Schedule extends React.Component {
       selectWorkers: [],
       selectWorker: '',
       scheduledWorkers: [],
+      newWorkers:[],
       rosters: [],
       worker: '',
       phone: '',
@@ -112,16 +113,15 @@ class Schedule extends React.Component {
       })
     }
   };
+
   postWorker(){
     Client.postWorker(this.state.worker, this.state.scheduleId, () => {
       console.log('hello post worker')
     })
   };
-  postNestedAttributes(){
 
-  };
   postMessage(){
-    Client.postMessage(this.state.message, this.state.phone, this.state.scheduleId);
+    Client.postMessage(this.state.message, this.state.phone);
   };
   updateSchedule(){
     Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
@@ -136,9 +136,9 @@ class Schedule extends React.Component {
   };
   handleDate(date){
     const dateClone = date;
-    const dateTime = date.set({'hour': 19, 'minute': 0, 'second': 0})
+
     const dateTimeYesterday = dateClone.set({'hour': 19, 'minute': 0, 'second': 0}).subtract(1, 'day');
-    this.setState({reminderDate: dateTimeYesterday._d, date: date.set({'hour': 19, 'minute': 0, 'second': 0})._d}, () => console.log(this.state.date));
+    this.setState({reminderDate: dateTimeYesterday._d, date: date.set({'hour': 19, 'minute': 0, 'second': 0})._d}, () => console.log("1 day ago at 7 PM:" + this.state.date));
     this.validateDate();
   };
   handleWorkerName(e){
@@ -189,14 +189,14 @@ class Schedule extends React.Component {
       console.log("Need to have at least a worker!")
     }
   };
-  getSchedulesWorkersAndTexts(){
+  getSchedulesAndTexts(){
     this.getSchedules();
     this.getWorkers();
     //this.getRosters();
     //this.getTexts();
   };
   componentDidMount(){
-    this.getSchedulesWorkersAndTexts();
+    this.getSchedulesAndTexts();
   };
 
   validateDate(){
@@ -255,6 +255,7 @@ class Schedule extends React.Component {
                                                     handleScheduleMessage={this.handleScheduleMessage}
                                                     handleWorkerPhone={this.handleWorkerPhone}
                                                     selectWorkers={this.state.selectWorkers}
+                                                    newWorkers={this.state.newWorkers}
                                                     handleSelectWorker={this.handleSelectWorker}
                                                     selectWorker={this.state.selectWorker}
                                                     validateSchedule={this.validateSchedule}
@@ -276,7 +277,6 @@ class Schedule extends React.Component {
             <h1>Schedules:</h1>
           </Col>
         </Row>
-
         <Row>
           <DisplaySchedules
             schedules={this.state.schedules}
@@ -300,6 +300,7 @@ class Schedule extends React.Component {
         <Button bsStyle="danger" onClick={() => console.log(this.state.message)}>Get message</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.selectWorker)}>Get name</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.phone)}>Get phone</Button>
+
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )

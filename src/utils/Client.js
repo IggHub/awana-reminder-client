@@ -52,7 +52,7 @@ function postSchedule(date, message, phone, workerName, cb) {
       date: date,
       message: message,
       user_id: 1,
-      worker_info: {name: workerName, phone: phone}
+      worker_info: [{name: workerName, phone: phone}, {name: "Iggy Test!", phone: "818-943-9150"}]
     })
   }).then((response) => response.json())
     .then(cb);
@@ -87,19 +87,18 @@ function postText(message, scheduleId, cb){
     .then(cb);
 };
 
-function postMessage(message, phone, scheduleId){
+function postMessage(message, phone){
   phone = PhoneHelper.condensePhone(phone);
-  return fetch(`api/texts/send_text`, {
+  return fetch(`text_it`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       message: message,
-      phone: phone,
-      schedule_id: scheduleId
+      phone: phone
     })
-  }).then((response) => response.json())
+  })
 };
 
 function postRoster(scheduleId, workerId, cb){
