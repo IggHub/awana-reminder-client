@@ -52,7 +52,7 @@ function postSchedule(date, message, phone, workerName, cb) {
       date: date,
       message: message,
       user_id: 1,
-      worker_info: [{name: workerName, phone: phone}, {name: "Iggy Test!", phone: "818-943-9150"}]
+      worker_info: [{name: workerName, phone: phone}, {name: "Yet another Iggy Test!", phone: "818-943-9150"}]
     })
   }).then((response) => response.json())
     .then(cb);

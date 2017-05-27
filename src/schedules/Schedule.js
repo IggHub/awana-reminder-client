@@ -26,6 +26,10 @@ class Schedule extends React.Component {
       selectWorker: '',
       scheduledWorkers: [],
       newWorkers:[],
+      enterWorkerInputId: '',
+      workerTemp1: '',
+      workerTemp2: '',
+      workerTemp3: '',
       rosters: [],
       worker: '',
       phone: '',
@@ -168,8 +172,26 @@ class Schedule extends React.Component {
   handleCreate(){
     this.setState({editable: false, creatable: !this.state.creatable})
   };
-  handleSelectWorker(val){
-    this.setState({selectWorker: val.label});
+  handleSelectWorker(val, id){
+    //this.setState({selectWorker: val.label});
+    let newArray = this.state.newWorkers.slice();
+    if (id === 1) {
+      newArray = [{label: val.label}]
+      this.setState({workerTemp1: val.label});
+    } else if (id === 2) {
+      newArray = [{label: this.state.workerTemp1}, {label: val.label}]
+      this.setState({workerTemp2: val.label})
+    } else if (id === 3){
+      newArray = [{label: this.state.workerTemp1}, {label: this.state.workerTemp2}, {label: val.label}]
+      this.setState({workerTemp3: val.label})
+    }
+    //newArray.push({id: id, name: val.label})
+    console.log('newarray:');
+    console.log(newArray);
+
+    //instead of setState newWorkers, try to append it to current newWorkers. Remember, their ID is different!
+    this.setState({newWorkers: newArray})
+
     this.validateWorker();
   };
   clickWorker(worker){
@@ -268,7 +290,8 @@ class Schedule extends React.Component {
                                                     validatePhone={this.validatePhone}
                                                     workerHolderCounter={this.state.workerHolderCounter}
                                                     incrementWorkerHolderCounter={this.incrementWorkerHolderCounter}
-                                                    decrementWorkerHolderCounter={this.decrementWorkerHolderCounter} /> : <div></div>;
+                                                    decrementWorkerHolderCounter={this.decrementWorkerHolderCounter}
+                                                    enterWorkerInputId={this.state.enterWorkerInputId}/> : <div></div>;
 
     return (
       <Grid>

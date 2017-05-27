@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormGroup, ControlLabel, Col, Row, Button} from 'react-bootstrap';
+import {FormGroup, ControlLabel, Col, Row, Button, DropdownButton, MenuItem} from 'react-bootstrap';
 import Creatable from 'react-select';
 import '../Error.css';
 import '../Buttons.css';
@@ -13,13 +13,15 @@ class EnterWorkerInput extends React.Component{
         <ControlLabel>Enter Worker:</ControlLabel>
           <Row>
             <Col md={8}>
-            <Creatable
-              name="form-field-name"
-              value={this.props.selectWorker}
-              options={this.props.selectWorkers}
-              onChange={this.props.handleSelectWorker}
-            />
-            </Col>
+              <Creatable
+                name="form-field-name"
+                value={this.props.newWorkers[this.props.id - 1]}
+                options={this.props.selectWorkers}
+                onChange={(val, id) => {this.props.handleSelectWorker(val, this.props.id)}}
+              />
+              <Button bsStyle="info" onClick={() => console.log(this.props.id)}>Display ID</Button>
+              <Button bsStyle="info" onClick={() => console.log(this.props.selectWorkers[0].label)}>Display workers</Button>
+              </Col>
             <Col md={3} mdOffset={1}>
               {twoButtons}
             </Col>

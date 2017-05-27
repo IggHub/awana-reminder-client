@@ -14,7 +14,19 @@ class CreateSchedule extends React.Component {
     var workerHolder = [];
     for(var i = 1; i <= this.props.workerHolderCounter; i++){
       workerHolder.push(
-        <EnterWorkerInput key={i} workerHolderCounter={this.props.workerHolderCounter} selectWorker={this.props.selectWorker} selectWorkers={this.props.selectWorkers} handleSelectWorker={this.props.handleSelectWorker} workerErrorMessage={this.props.workerErrorMessage} incrementWorkerHolderCounter={this.props.incrementWorkerHolderCounter} decrementWorkerHolderCounter={this.props.decrementWorkerHolderCounter} />
+        <EnterWorkerInput
+          key={i}
+          id={i}
+          workerHolderCounter={this.props.workerHolderCounter}
+          selectWorker={this.props.selectWorker}
+          selectWorkers={this.props.selectWorkers}
+          handleSelectWorker={this.props.handleSelectWorker}
+          workerErrorMessage={this.props.workerErrorMessage}
+          incrementWorkerHolderCounter={this.props.incrementWorkerHolderCounter}
+          decrementWorkerHolderCounter={this.props.decrementWorkerHolderCounter}
+          newWorkers={this.props.newWorkers}
+          enterWorkerInputId={this.props.enterWorkerInputId}
+        />
       )
     }
     return (
@@ -31,7 +43,7 @@ class CreateSchedule extends React.Component {
 
               <Button bsStyle="info" onClick={this.props.validateSchedule}>Validate!</Button>
               <Button bsStyle="info" onClick={this.props.postSchedule}>Submit New</Button>
-
+              <Button bsStyle="info" onClick={() => console.log(this.props.newWorkers)}>Display new workers</Button>
           </Col>
         </Row>
       </Grid>
