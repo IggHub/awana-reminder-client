@@ -30,6 +30,7 @@ class Schedule extends React.Component {
       workerTemp1: '',
       workerTemp2: '',
       workerTemp3: '',
+      createWorkerId: '',
       rosters: [],
       worker: '',
       phone: '',
@@ -109,10 +110,20 @@ class Schedule extends React.Component {
   };
   postSchedule(){
     //if it fails validation, don't submit. If it passes validation, do the below:
-    if(this.state.date === "" || this.state.message === "" || this.state.phone === "" || this.state.selectWorker === undefined || this.state.selectWorker === ""){
+    if(this.state.date === "" || this.state.message === "" || this.state.phone === "" || this.state.newWorkers === ""){
       console.log("ERROR! One or more fields are blank")
     } else {
-      Client.postSchedule(this.state.date, this.state.message, this.state.phone, this.state.selectWorker, (schedule) => {
+      let tempNewWorkers = this.state.newWorkers.slice();
+      let labelToNameArrayMap = tempNewWorkers.map(function(worker) {
+        return {
+          name: worker.label,
+          phone: worker.phone
+        }
+      }).filter((el) => {
+        return el.name.length > 0;
+      })
+      //need to filter so empty arrays won't show up
+      Client.postSchedule(this.state.date, this.state.message, labelToNameArrayMap, (schedule) => {
         this.setState({schedules: this.state.schedules.concat([schedule])})
       })
     }
@@ -176,13 +187,13 @@ class Schedule extends React.Component {
     //this.setState({selectWorker: val.label});
     let newArray = this.state.newWorkers.slice();
     if (id === 1) {
-      newArray = [{label: val.label}]
+      newArray = [{label: val.label, phone: "123-456-7890"}, {label: this.state.workerTemp2, phone: '123-456-7890'}, {label: this.state.workerTemp3, phone: '123-123-1234'}]
       this.setState({workerTemp1: val.label});
     } else if (id === 2) {
-      newArray = [{label: this.state.workerTemp1}, {label: val.label}]
+      newArray = [{label: this.state.workerTemp1, phone: "123-456-7890"}, {label: val.label, phone: "111-222-3333"}, {label: this.state.workerTemp2, phone: '111-222-5555'}]
       this.setState({workerTemp2: val.label})
     } else if (id === 3){
-      newArray = [{label: this.state.workerTemp1}, {label: this.state.workerTemp2}, {label: val.label}]
+      newArray = [{label: this.state.workerTemp1, phone: "123-456-7890"}, {label: this.state.workerTemp2, phone: '123-456-7890'}, {label: val.label, phone: '123-456-1234'}]
       this.setState({workerTemp3: val.label})
     }
     //newArray.push({id: id, name: val.label})
@@ -204,9 +215,24 @@ class Schedule extends React.Component {
       console.log("Can't put too many workers!")
     }
   };
-  decrementWorkerHolderCounter(){
+  decrementWorkerHolderCounter(id){
     if (this.state.workerHolderCounter > 1) {
-      this.setState({workerHolderCounter: this.state.workerHolderCounter - 1}, () => console.log(this.state.workerHolderCounter))
+      this.setState({workerHolderCounter: this.state.workerHolderCounter - 1}, () => console.log(this.state.workerHolderCounter));
+      let tempNewWorkers = this.state.newWorkers.slice();
+      if (id === 3) {
+        tempNewWorkers[id - 1] = {label: "", phone: ""}
+      } else if (id === 2){
+        tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "123-456-7890"};
+        tempNewWorkers[id] = {label: "", phone: ""}
+      } else if (id === 1) {
+        tempNewWorkers[id-1] = {label: this.state.workerTemp2, phone: "111-22-3333"};
+        tempNewWorkers[id] = {label: this.state.workerTemp3, phone: "999-888-7777"};
+      }
+      //tempNewWorkers[last] still has value!
+      console.log("current new workers:")
+      this.setState({newWorkers: tempNewWorkers});
+      //tempNewWorkersDecrement[id - 1] = {name: "", phone: ""}
+      //this.setState({newWorkers: tempNewWorkersDecrement})
     } else {
       console.log("Need to have at least a worker!")
     }
@@ -291,7 +317,9 @@ class Schedule extends React.Component {
                                                     workerHolderCounter={this.state.workerHolderCounter}
                                                     incrementWorkerHolderCounter={this.incrementWorkerHolderCounter}
                                                     decrementWorkerHolderCounter={this.decrementWorkerHolderCounter}
-                                                    enterWorkerInputId={this.state.enterWorkerInputId}/> : <div></div>;
+                                                    enterWorkerInputId={this.state.enterWorkerInputId}
+                                                    createWorkerId={this.state.createWorkerId}
+                                                    /> : <div></div>;
 
     return (
       <Grid>

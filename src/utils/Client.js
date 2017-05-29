@@ -42,7 +42,7 @@ function getRosters(cb) {
     .then(cb)
 };
 
-function postSchedule(date, message, phone, workerName, cb) {
+function postSchedule(date, message, workersArray, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
     headers: {
@@ -52,7 +52,7 @@ function postSchedule(date, message, phone, workerName, cb) {
       date: date,
       message: message,
       user_id: 1,
-      worker_info: [{name: workerName, phone: phone}, {name: "Yet another Iggy Test!", phone: "818-943-9150"}]
+      worker_info: workersArray
     })
   }).then((response) => response.json())
     .then(cb);
