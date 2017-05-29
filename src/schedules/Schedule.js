@@ -220,13 +220,14 @@ class Schedule extends React.Component {
       this.setState({workerHolderCounter: this.state.workerHolderCounter - 1}, () => console.log(this.state.workerHolderCounter));
       let tempNewWorkers = this.state.newWorkers.slice();
       if (id === 3) {
-        tempNewWorkers[id - 1] = {label: "", phone: ""}
+        tempNewWorkers[id - 1] = {label: "", phone: ""};
       } else if (id === 2){
         tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "123-456-7890"};
-        tempNewWorkers[id] = {label: "", phone: ""}
+        tempNewWorkers[id] = {label: "", phone: ""};
       } else if (id === 1) {
-        tempNewWorkers[id-1] = {label: this.state.workerTemp2, phone: "111-22-3333"};
+        tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "111-22-3333"};
         tempNewWorkers[id] = {label: this.state.workerTemp3, phone: "999-888-7777"};
+        tempNewWorkers[id + 1] = {label: "", phone: ""};
       }
       //tempNewWorkers[last] still has value!
       console.log("current new workers:")
