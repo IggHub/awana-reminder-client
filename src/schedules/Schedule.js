@@ -40,11 +40,14 @@ class Schedule extends React.Component {
       reminderDate: '',
       userId: 1,
       scheduleId: '',
-      prevId: 0,
       editable: false,
       creatable: true,
       dateErrorMessage:'',
       workerErrorMessage: '',
+      workerErrorMessages: [],
+      workerErrorMessageTemp1: '',
+      workerErrorMessageTemp2: '',
+      workerErrorMessageTemp3: '',
       phoneErrorMessage: '',
       messageErrorMessage: '',
       workerHolderCounter: 1
@@ -222,7 +225,14 @@ class Schedule extends React.Component {
       if (id === 3) {
         tempNewWorkers[id - 1] = {label: "", phone: ""};
       } else if (id === 2){
-        tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "123-456-7890"};
+        if (!this.state.workerTemp3){
+          tempNewWorkers[id - 1] = {label: "", phone: ""}
+        } else {
+          tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "123-456-7890"};
+        }
+        if (this.state.workerTemp3){
+          tempNewWorkers[id - 1] = {label: this.state.workerTemp3, phone: "123-456-7890"};
+        }
         tempNewWorkers[id] = {label: "", phone: ""};
       } else if (id === 1) {
         tempNewWorkers[id - 1] = {label: this.state.workerTemp2, phone: "111-22-3333"};
@@ -255,6 +265,12 @@ class Schedule extends React.Component {
   };
 
   validateWorker(){
+    let newWorkersNameArray = this.state.newWorkers.map((worker) => {return worker.label});
+    console.log(newWorkersNameArray);
+    if (newWorkersNameArray[0] && !newWorkersNameArray[1]){
+      //case 1: only one worker is there, so 2nd element of array is blank. Validate only first element
+    } //case 2: 2 workers. 1st and 2nd element = filled, 3rd element = blank.
+    //case 3: 3 workers
     if (this.state.selectWorker.length >= 70) {
       this.setState({workerErrorMessage: "worker name is too long"});
     } else if(this.state.selectWorker === "" || this.state.selectWorker === undefined) {
@@ -310,6 +326,7 @@ class Schedule extends React.Component {
                                                     validateSchedule={this.validateSchedule}
                                                     dateErrorMessage={this.state.dateErrorMessage}
                                                     workerErrorMessage={this.state.workerErrorMessage}
+                                                    workerErrorMessages={this.state.workerErrorMessages}
                                                     phoneErrorMessage={this.state.phoneErrorMessage}
                                                     messageErrorMessage={this.state.messageErrorMessage}
                                                     phone={this.state.phone}
