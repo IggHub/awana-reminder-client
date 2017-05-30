@@ -26,14 +26,16 @@ class Schedule extends React.Component {
       selectWorker: '',
       scheduledWorkers: [],
       newWorkers:[],
-      enterWorkerInputId: '',
       workerTemp1: '',
       workerTemp2: '',
       workerTemp3: '',
-      createWorkerId: '',
       rosters: [],
       worker: '',
       phone: '',
+      newPhones: [],
+      phoneTemp1: '',
+      phoneTemp2: '',
+      phoneTemp3: '',
       texts: [],
       message: "",
       date: '',
@@ -44,7 +46,7 @@ class Schedule extends React.Component {
       creatable: true,
       dateErrorMessage:'',
       workerErrorMessage: '',
-      workerErrorMessages: [],
+      workerErrorMessages: [{message: ""}, {message: ""}, {message: ""}],
       workerErrorMessageTemp1: '',
       workerErrorMessageTemp2: '',
       workerErrorMessageTemp3: '',
@@ -113,7 +115,7 @@ class Schedule extends React.Component {
   };
   postSchedule(){
     //if it fails validation, don't submit. If it passes validation, do the below:
-    if(this.state.date === "" || this.state.message === "" || this.state.phone === "" || this.state.newWorkers === ""){
+    if(this.state.date === "" || this.state.message === "" || this.state.newWorkers === []){
       console.log("ERROR! One or more fields are blank")
     } else {
       let tempNewWorkers = this.state.newWorkers.slice();
@@ -130,12 +132,6 @@ class Schedule extends React.Component {
         this.setState({schedules: this.state.schedules.concat([schedule])})
       })
     }
-  };
-
-  postWorker(){
-    Client.postWorker(this.state.worker, this.state.scheduleId, () => {
-      console.log('hello post worker')
-    })
   };
 
   postMessage(){
@@ -162,8 +158,20 @@ class Schedule extends React.Component {
   handleWorkerName(e){
     this.setState({worker: e.target.value});
   };
-  handleWorkerPhone(e){
+  handleWorkerPhone(id, e){
     this.setState({phone: e.target.value});
+    let newPhoneArray = this.state.newWorkers.slice();
+    if(id === 1){
+      newPhoneArray = [{label: this.state.workerTemp1, phone: e.target.value}, {label: this.state.workerTemp2, phone: this.state.phoneTemp2}, {label: this.state.workerTemp3, phone: this.state.phoneTemp3}];
+      this.setState({phoneTemp1: e.target.value});
+    } else if (id === 2) {
+      newPhoneArray = [{label: this.state.workerTemp1, phone: this.state.phoneTemp1}, {label: this.state.workerTemp2, phone: e.target.value}, {label: this.state.workerTemp3, phone: this.state.phoneTemp3}];
+      this.setState({phoneTemp2: e.target.value});
+    } else if (id === 3) {
+      newPhoneArray = [{label: this.state.workerTemp1, phone: this.state.phoneTemp1}, {label: this.state.workerTemp2, phone: this.state.phoneTemp2}, {label: this.state.workerTemp3, phone: e.target.value}]
+    }
+
+    this.setState({newWorkers: newPhoneArray});
     this.validatePhone();
   };
   handleScheduleMessage(e){
@@ -190,18 +198,15 @@ class Schedule extends React.Component {
     //this.setState({selectWorker: val.label});
     let newArray = this.state.newWorkers.slice();
     if (id === 1) {
-      newArray = [{label: val.label, phone: "123-456-7890"}, {label: this.state.workerTemp2, phone: '123-456-7890'}, {label: this.state.workerTemp3, phone: '123-123-1234'}]
+      newArray = [{label: val.label, phone: this.state.phoneTemp1}, {label: this.state.workerTemp2, phone: this.state.phoneTemp2}, {label: this.state.workerTemp3, phone: this.state.phoneTemp3}]
       this.setState({workerTemp1: val.label});
     } else if (id === 2) {
-      newArray = [{label: this.state.workerTemp1, phone: "123-456-7890"}, {label: val.label, phone: "111-222-3333"}, {label: this.state.workerTemp2, phone: '111-222-5555'}]
+      newArray = [{label: this.state.workerTemp1, phone: this.state.phonTemp1}, {label: val.label, phone: this.state.phoneTemp2}, {label: this.state.workerTemp2, phone: this.state.phoneTemp3}]
       this.setState({workerTemp2: val.label})
     } else if (id === 3){
-      newArray = [{label: this.state.workerTemp1, phone: "123-456-7890"}, {label: this.state.workerTemp2, phone: '123-456-7890'}, {label: val.label, phone: '123-456-1234'}]
+      newArray = [{label: this.state.workerTemp1, phone: this.state.phoneTemp1}, {label: this.state.workerTemp2, phone: this.state.phoneTemp2}, {label: val.label, phone: this.state.phoneTemp3}]
       this.setState({workerTemp3: val.label})
     }
-    //newArray.push({id: id, name: val.label})
-    console.log('newarray:');
-    console.log(newArray);
 
     //instead of setState newWorkers, try to append it to current newWorkers. Remember, their ID is different!
     this.setState({newWorkers: newArray})
@@ -240,7 +245,7 @@ class Schedule extends React.Component {
         tempNewWorkers[id + 1] = {label: "", phone: ""};
       }
       //tempNewWorkers[last] still has value!
-      console.log("current new workers:")
+
       this.setState({newWorkers: tempNewWorkers});
       //tempNewWorkersDecrement[id - 1] = {name: "", phone: ""}
       //this.setState({newWorkers: tempNewWorkersDecrement})
@@ -266,18 +271,37 @@ class Schedule extends React.Component {
 
   validateWorker(){
     let newWorkersNameArray = this.state.newWorkers.map((worker) => {return worker.label});
-    console.log(newWorkersNameArray);
-    if (newWorkersNameArray[0] && !newWorkersNameArray[1]){
-      //case 1: only one worker is there, so 2nd element of array is blank. Validate only first element
-    } //case 2: 2 workers. 1st and 2nd element = filled, 3rd element = blank.
-    //case 3: 3 workers
+    let workerErrorMessagesTemp = this.state.workerErrorMessages;
+    if(newWorkersNameArray[0] === "" || newWorkersNameArray === []){
+      workerErrorMessagesTemp[0] = {message: "Worker 1 is empty"};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    } else if (newWorkersNameArray[0] !== "") {
+      workerErrorMessagesTemp[0] = {message: ""};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    }
+    if (newWorkersNameArray[1] === "" || newWorkersNameArray === []) {
+      workerErrorMessagesTemp[1] = {message: "Worker 2 is empty"};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    } else if (newWorkersNameArray[1] !== "") {
+      workerErrorMessagesTemp[1] = {message: ""};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    }
+    if (newWorkersNameArray[2] === "" || newWorkersNameArray === []) {
+      workerErrorMessagesTemp[2] = {message: "Worker 3 is empty"};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    } else if (newWorkersNameArray[2] !== "") {
+      workerErrorMessagesTemp[2] = {message: ""};
+      this.setState({workerErrorMessages: workerErrorMessagesTemp});
+    }
+
+/*
     if (this.state.selectWorker.length >= 70) {
       this.setState({workerErrorMessage: "worker name is too long"});
     } else if(this.state.selectWorker === "" || this.state.selectWorker === undefined) {
       this.setState({workerErrorMessage: "worker is EMPTY"});
     } else if(this.state.selectWorker.length < 70) {
-      this.setState({validationPoints: 0})
     }
+*/
   };
 
   validatePhone(){
@@ -330,13 +354,12 @@ class Schedule extends React.Component {
                                                     phoneErrorMessage={this.state.phoneErrorMessage}
                                                     messageErrorMessage={this.state.messageErrorMessage}
                                                     phone={this.state.phone}
+                                                    newPhones={this.state.newPhones}
                                                     message={this.state.message}
                                                     validatePhone={this.validatePhone}
                                                     workerHolderCounter={this.state.workerHolderCounter}
                                                     incrementWorkerHolderCounter={this.incrementWorkerHolderCounter}
                                                     decrementWorkerHolderCounter={this.decrementWorkerHolderCounter}
-                                                    enterWorkerInputId={this.state.enterWorkerInputId}
-                                                    createWorkerId={this.state.createWorkerId}
                                                     /> : <div></div>;
 
     return (
@@ -369,7 +392,7 @@ class Schedule extends React.Component {
         <Button bsStyle="danger" onClick={() => console.log(this.state.message)}>Get message</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.selectWorker)}>Get name</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.phone)}>Get phone</Button>
-
+        <Button bsStyle="danger" onClick={() => console.log(this.state.workerErrorMessages)}>Get Worker error messages</Button>
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )
