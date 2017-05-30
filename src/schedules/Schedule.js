@@ -135,7 +135,7 @@ class Schedule extends React.Component {
   };
 
   postMessage(){
-    Client.postMessage(this.state.message, this.state.phone);
+    Client.postMessage(this.state.message, this.state.newWorkers);
   };
   updateSchedule(){
     Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
@@ -169,6 +169,7 @@ class Schedule extends React.Component {
       this.setState({phoneTemp2: e.target.value});
     } else if (id === 3) {
       newPhoneArray = [{label: this.state.workerTemp1, phone: this.state.phoneTemp1}, {label: this.state.workerTemp2, phone: this.state.phoneTemp2}, {label: this.state.workerTemp3, phone: e.target.value}]
+      this.setState({phoneTemp3: e.target.value});
     }
 
     this.setState({newWorkers: newPhoneArray});
@@ -393,6 +394,7 @@ class Schedule extends React.Component {
         <Button bsStyle="danger" onClick={() => console.log(this.state.selectWorker)}>Get name</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.phone)}>Get phone</Button>
         <Button bsStyle="danger" onClick={() => console.log(this.state.workerErrorMessages)}>Get Worker error messages</Button>
+        <Button bsStyle="danger" onClick={() => console.log(this.state.newWorkers)}>Get Workers</Button>
         <Button bsStyle="info" onClick={this.postMessage}>Send Message</Button>
       </Grid>
     )

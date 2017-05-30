@@ -87,18 +87,20 @@ function postText(message, scheduleId, cb){
     .then(cb);
 };
 
-function postMessage(message, phone){
-  phone = PhoneHelper.condensePhone(phone);
-  return fetch(`text_it`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      message: message,
-      phone: phone
+function postMessage(message, newWorkers){
+  let phoneArray = newWorkers.map((worker) => {return PhoneHelper.condensePhone(worker.phone)})
+
+    return fetch(`text_it`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message,
+        phones: phoneArray
+      })
     })
-  })
+
 };
 
 function postRoster(scheduleId, workerId, cb){
