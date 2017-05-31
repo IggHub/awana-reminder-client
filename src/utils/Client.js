@@ -87,8 +87,10 @@ function postText(message, scheduleId, cb){
     .then(cb);
 };
 
-function postMessage(message, newWorkers){
-  let phoneArray = newWorkers.map((worker) => {return PhoneHelper.condensePhone(worker.phone)})
+function postMessage(message, newWorkers, messageDatetime){
+  let phoneArray = newWorkers.map((worker) => {
+    return PhoneHelper.condensePhone(worker.phone)
+  }).filter((el) => {return el !== ""});
 
     return fetch(`text_it`, {
       method: 'POST',
@@ -97,7 +99,8 @@ function postMessage(message, newWorkers){
       },
       body: JSON.stringify({
         message: message,
-        phones: phoneArray
+        phones: phoneArray,
+        message_datetime: messageDatetime.getTime()
       })
     })
 

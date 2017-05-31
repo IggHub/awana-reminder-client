@@ -135,8 +135,9 @@ class Schedule extends React.Component {
   };
 
   postMessage(){
-    Client.postMessage(this.state.message, this.state.newWorkers);
+    Client.postMessage(this.state.message, this.state.newWorkers, this.state.date);
   };
+
   updateSchedule(){
     Client.updateSchedule(this.state.scheduleId, this.state.date, () => {
       this.setState({schedules: this.state.schedules});
@@ -150,9 +151,8 @@ class Schedule extends React.Component {
   };
   handleDate(date){
     const dateClone = date;
-
-    const dateTimeYesterday = dateClone.set({'hour': 19, 'minute': 0, 'second': 0}).subtract(1, 'day');
-    this.setState({reminderDate: dateTimeYesterday._d, date: date.set({'hour': 19, 'minute': 0, 'second': 0})._d}, () => console.log("1 day ago at 7 PM:" + this.state.date));
+    const dateTimeYesterday = dateClone.set({'hour': 11, 'minute': 15, 'second': 30})
+    this.setState({reminderDate: dateTimeYesterday._d, date: date._d}, () => console.log("1 day ago at 7 PM: " + this.state.date));
     this.validateDate();
   };
   handleWorkerName(e){

@@ -15,7 +15,8 @@ class EnterDateInput extends React.Component {
     return (
       <FormGroup>
         <ControlLabel>Enter Date:</ControlLabel>
-        <DateTime timeFormat={false} isValidDate={valid} onChange={this.props.handleDate}/>
+        {/*<DateTime timeFormat={false} isValidDate={valid} onChange={this.props.handleDate}/>*/}
+        <DateTime isValidDate={valid} onChange={this.props.handleDate}/>
         <div className="error-message">{dateError}</div>
       </FormGroup>
     )
