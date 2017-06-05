@@ -1,20 +1,13 @@
 import React from 'react';
-import {FormGroup, FormControl, ControlLabel, Col, Row, Button} from 'react-bootstrap';
+import {FormGroup, FormControl, ControlLabel, Col, Row} from 'react-bootstrap';
 import Creatable from 'react-select';
 import '../Error.css';
 import '../Buttons.css';
 
 class EnterWorkerInput extends React.Component{
-  constructor(){
-    super();
-  }
   render(){
     const workerNameError = (this.props.selectWorker === undefined || this.props.selectWorker === "" || this.props.selectWorker.length > 70) ? <div className="error-message">{this.props.workerErrorMessage}</div> : <div></div>
-  //let workerNameErrorMessage = <div></div>
-  //if (this.props.newWorkers[this.props.id - 1] !== undefined) {}
-  //const workerNameErrorMessage = this.props.newWorkers[this.props.id - 1] === "") ? <div className="error-message">ERROR!</div> : <div></div>
 
-    const twoButtons = <div><Button onClick={this.props.incrementWorkerHolderCounter} className="add-worker" bsStyle="info">+</Button> <Button onClick={(id) => this.props.decrementWorkerHolderCounter(this.props.id)} className="add-worker" bsStyle="danger">-</Button></div>
     return (
       <div>
         <FormGroup>

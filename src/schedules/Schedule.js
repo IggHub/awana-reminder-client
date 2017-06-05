@@ -29,7 +29,6 @@ class Schedule extends React.Component {
       workerTemp1: '',
       workerTemp2: '',
       workerTemp3: '',
-      rosters: [],
       worker: '',
       phone: '',
       newPhones: [],
@@ -97,11 +96,7 @@ class Schedule extends React.Component {
       this.setState({texts})
     })
   };
-  getRosters(){
-    Client.getRosters((rosters) => {
-      this.setState({rosters})
-    })
-  };
+
   mapWorkersToSelectWorkers(workers){
     let selectWorkers = workers.map(function(worker){
       return {
@@ -126,8 +121,7 @@ class Schedule extends React.Component {
         }
       }).filter((el) => {
         return el.name.length > 0;
-      })
-      //need to filter so empty arrays won't show up
+      });
       Client.postSchedule(this.state.date, this.state.message, labelToNameArrayMap, (schedule) => {
         this.setState({schedules: this.state.schedules.concat([schedule])})
       })
@@ -151,7 +145,7 @@ class Schedule extends React.Component {
   };
   handleDate(date){
     const dateClone = date;
-    const dateTimeYesterday = dateClone.set({'hour': 11, 'minute': 15, 'second': 30})
+    const dateTimeYesterday = dateClone.set({'hour': 16, 'minute': 30, 'second': 30})
     this.setState({reminderDate: dateTimeYesterday._d, date: date._d}, () => console.log("1 day ago at 7 PM: " + this.state.date));
     this.validateDate();
   };
@@ -257,7 +251,6 @@ class Schedule extends React.Component {
   getSchedulesAndTexts(){
     this.getSchedules();
     this.getWorkers();
-    //this.getRosters();
     //this.getTexts();
   };
   componentDidMount(){
@@ -376,7 +369,6 @@ class Schedule extends React.Component {
             handleEdit={this.handleEdit}
             deleteSchedule={this.deleteSchedule}
             workers={this.state.workers}
-            rosters={this.state.rosters}
             texts={this.state.texts}
           />
         </Row>

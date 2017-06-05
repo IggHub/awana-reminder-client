@@ -32,16 +32,6 @@ function getTexts(cb, schedule_id = null){
     .then(cb)
 };
 
-function getRosters(cb) {
-  return fetch(`api/rosters`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  }).then((response) => response.json())
-    .then(cb)
-};
-
 function postSchedule(date, message, workersArray, cb) {
   return fetch(`api/schedules`, {
     method: 'POST',
@@ -103,20 +93,6 @@ function postMessage(message, newWorkers, messageDatetime){
         message_datetime: messageDatetime.getTime()
       })
     })
-
-};
-
-function postRoster(scheduleId, workerId, cb){
-  return fetch(`api/rosters`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      schedule_id: scheduleId,
-      worker_id: workerId
-    })
-  }).then((response) => response.json())
 };
 
 function updateSchedule(scheduleId, date, cb) {
@@ -170,7 +146,6 @@ const Client = {
     getSchedules,
     getWorkers,
     getTexts,
-    getRosters,
     updateSchedule,
     updateWorker,
     deleteSchedule,
@@ -179,8 +154,7 @@ const Client = {
     postSchedule,
     postWorker,
     postMessage,
-    postText,
-    postRoster
+    postText
   };
 
 export default Client;

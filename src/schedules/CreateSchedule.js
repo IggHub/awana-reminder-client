@@ -3,7 +3,7 @@ import {Grid, Col, Row, Button} from 'react-bootstrap';
 import 'react-select/dist/react-select.css';
 import EnterDateInput from './EnterDateInput';
 import EnterWorkerInput from './EnterWorkerInput';
-import EnterPhoneInput from './EnterPhoneInput';
+//import EnterPhoneInput from './EnterPhoneInput';
 import EnterMessageInput from './EnterMessageInput';
 
 class CreateSchedule extends React.Component {
