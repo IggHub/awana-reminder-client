@@ -1,9 +1,15 @@
 import React from 'react';
-import {Thumbnail, Row, Col, Button} from 'react-bootstrap';
+import {Thumbnail, Row, Col, Button, Image} from 'react-bootstrap';
+import CalendarIcon from '../../public/assets/CalendarIcon.png';
 
 const thumbnailStyle= {
-  height: '350px'
+  backgroundColor: '#FF8383',
+  height: '500px'
 };
+
+const topRectangle = {
+
+}
 
 class DisplaySchedules extends React.Component{
   render(){
@@ -11,7 +17,7 @@ class DisplaySchedules extends React.Component{
       <div>
       {this.props.schedules.map((schedule, index) =>
         <Col md={4} sm={6} key={index}>
-          <Thumbnail style={thumbnailStyle}>
+          <Thumbnail src={CalendarIcon} style={thumbnailStyle}>
             <Row>
               <Col xs={10} xsOffset={1}>
                 <h4 className="class-title">
@@ -53,6 +59,7 @@ class DisplaySchedules extends React.Component{
           </Thumbnail>
         </Col>
       )}
+
       </div>
     )
   }
