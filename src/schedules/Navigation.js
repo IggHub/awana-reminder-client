@@ -3,7 +3,8 @@ import {Navbar, Nav, NavItem} from 'react-bootstrap';
 
 const nav = {
   backgroundColor: "#FFA17B",
-  color: "#FFFFFF"
+  color: "#FFFFFF",
+  padding: "5px 0px 5px 0px"
 };
 
 class Navigation extends React.Component {
