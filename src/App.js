@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Grid, Col, Row} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import Schedule from './schedules/Schedule';
 //import ValidationTest from './ValidationTest';
 import Navigation from '../src/schedules/Navigation';
@@ -14,15 +14,17 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={background}>
-        <Navigation />
-        <Grid>
-          <Row>
-            <Col lg={6} md={6} sm={12}>
-              <Schedule />
-            </Col>
-          </Row>
-        </Grid>
-        <Footer />
+        <Row>
+          <Navigation />
+        </Row>
+        <Row>
+          <Col lg={4} md={6} sm={12}>
+            <Schedule />
+          </Col>
+        </Row>
+        <Row>
+          <Footer />
+        </Row>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav, NavItem, Row, Col} from 'react-bootstrap';
+import {Navbar, Nav, Row, Col} from 'react-bootstrap';
 
 const footer = {
   border: "none",
@@ -9,7 +9,7 @@ const footer = {
 class Footer extends React.Component {
   render(){
     return (
-      <Navbar style={footer}>
+      <Navbar fluid style={footer}>
         <Row>
           <Col sm={1}>
           <Navbar.Brand>
@@ -20,13 +20,13 @@ class Footer extends React.Component {
           <Col sm={1} smOffset={1}>
             <Nav>
               <Row>
-                <NavItem>About</NavItem>
+                <a href="#" style={footer}>About</a>
               </Row>
               <Row>
-                <NavItem>Help</NavItem>
+                <a href="#" style={footer}>Help</a>
               </Row>
               <Row>
-                <NavItem>Contacts</NavItem>
+                <a href="#" style={footer}>Contacts</a>
               </Row>
             </Nav>
           </Col>

@@ -10,7 +10,7 @@ const nav = {
 class Navigation extends React.Component {
   render(){
     return (
-      <Navbar style={nav} fixedTop>
+      <Navbar fluid style={nav} fixedTop>
         <Navbar.Brand>
           <a href="#" style={nav}>AWANAFY</a>
         </Navbar.Brand>
